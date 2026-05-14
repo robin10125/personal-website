@@ -103,14 +103,14 @@ window.siteContent = {
       summary:
         "A photowall website where users can upload photos taken at an event to a photowall for that event.  Hosted using AWS.",
       tags: ["Full Stack", "AWS", "Community"],
-      url: "projects/cartpole.html"
+      url: "projects/alchemy-photowall.html"
     },
     {
-      title: "Cartpole RL Policy",
+      title: "Pong RL Policy",
       summary:
-        "Introductory project to learn the basics of RL.  Trained a Q network policy for the classic cartpole problem.",
+        "Introductory project to learn the basics of RL.  Trained a Q network policy for the classic pong game.",
       tags: ["RL", "Q Learning"],
-      url: "projects/cartpole.html"
+      url: "projects/pong.html"
     },
     {
       title: "Browser Based Shogi",
