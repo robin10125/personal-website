@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Technical Project Template | Robin Hylands</title>
+  <title>Point and Click Adventure | Robin Hylands</title>
   <link rel="stylesheet" href="../styles.css">
 </head>
 <body class="project-page">
@@ -14,13 +14,77 @@
 
     <header class="project-header">
       <p class="eyebrow">CS / Tech Project</p>
-      <h1>Technical Project Template</h1>
-      <p class="project-summary">Replace this page with a full technical project description.</p>
+      <h1>Point and Click Adventure Game</h1>
+      <p class="project-summary">This project is a Java-based point-and-click adventure game built as a university group project to demonstrate object-oriented programming and software engineering practices. </p>
     </header>
 
     <div class="project-content">
       <div class="template-note">
-        <p>To add a technical project, duplicate this file, rename it, write the project description, then add a matching object to <code>projects.js</code>.</p>
+        <p>
+	The game, themed around the *Grand Boqueria Market*, casts the player as a visitor competing for the "Golden Apple Trophy" by collecting at least 40 tickets within a 75-turn limit. 
+	The player navigates between themed market locations (the Entrance Gate, Main Square, Fresh Produce Row, Dairy & Livestock Corner, Picnic Grove, Candy Land, Arts & Crafts Lane, Stage Plaza, Storage Barn, and Tools & Hardware Stand) 
+	by clicking on directional connections, interacting with characters, picking up objects, using items on objects, giving items to vendors, and solving short item-based puzzles. 
+	Each location is rendered with a hand-illustrated PNG backdrop, and gameplay is driven by a graphical Swing-based interface rather than text input.
+	</p>
+	<p>
+	The deliverable consists of roughly 6,300 lines of Java across 31 source files, a JSON-encoded world definition (<code>data/game.json</code>), and a set of location artwork.
+	I led the high-level architecture, the core game-logic engine, and much of the GUI display logic.
+	</p>
+
+	<p>
+	The codebase is organized into a three-layer architecture: "domain / application / view":
+	</p>
+	<ul>
+	<li> <code>domain/</code> - Pure model classes with no UI or I/O dependencies: <code>World</code>, <code>Location</code>, <code>Connection</code>, <code>GameObject</code>, <code>Character</code>, <code>Inventory</code>, the rule classes (<code>UseRule</code>, <code>GiveRule</code>), and the <code>Selector</code> hierarchy (<code>NameSelector</code>, <code>AttributeSelector</code>). These types describe *what* the game world is, independently of how it is loaded or displayed.
+	<li> <code>application/</code> - Use-case coordination: <code>GameEngine</code> (the central command processor), <code>GameState</code> (the player's current location, inventory, turn count, and message history), <code>CommandResult</code> (a structured outcome of a turn), <code>WorldFactory</code> (deserializes JSON into a populated <code>World</code>), and <code>Launcher</code> (the <code>main</code> entry point).
+	<li> <code>view/</code> - Swing UI components: <code>MainWindow</code>, <code>LocationView</code>, <code>InventoryWindow</code>/<code>InventoryView</code>, <code>CommandPanel</code>, <code>MessagePanel</code>, <code>MenuView</code>, <code>TurnCounterView</code>, <code>WinDialog</code>, and the <code>GameController</code> mediator that bridges UI events to engine calls.
+	</ul>s
+	<p>
+	This layering enforces a unidirectional dependency rule: <code>view</code> depends on <code>application</code>, <code>application</code> depends on <code>domain</code>, and <code>domain</code> depends on nothing project-specific. The benefit is that the domain model is independently unit-testable.
+	</p>
+
+	<h2> Data-Driven World Definition </h2>
+	<p>
+	The game world — locations, objects, characters, dialogues, connections, win conditions, and interaction rules — is described in an external JSON file rather than hard-coded. <code>WorldFactory</code> uses Google's Gson library to deserialize <code>data/game.json</code> into a tree of intermediate POJOs, then walks that tree to construct the domain model. Locations, objects, and characters are registered in lookup maps so that JSON references-by-name resolve cleanly to live object references at load time.
+	</p>
+	<p>
+	This data-driven approach means new puzzles, items, and entire areas can be added without recompiling: the JSON exposes fields such as <code>requiresItem</code> (gating travel), <code>canPickUp</code>, <code>winOnPickup</code>, <code>gameEnding</code>, <code>attributes</code>, <code>useRules</code>, <code>giveRules</code>, and per-character <code>responses</code>. This makes the content separate from the game engine, so that the game engine can be reused on arbitrary stories.
+	</p>
+
+	<h2> Rule System</h2>
+	<p>
+	Interactions between items are modeled by two declarative rule types:
+	</p>
+	<ul>
+	<li> <code>UseRule</code> fires when the player uses one object on another (e.g. *use Rope Coil on Broken Milking Machine*). It owns a subject selector, a target selector, narration text, and a payload of rewards: objects to grant, characters to introduce, and connections to unlock.
+	<li> <code>GiveRule</code> fires when the player gives an object to a character (e.g. *give Map to Bob*) and similarly produces narration and rewards.
+	</ul>
+	<p>
+	Rather than matching by string equality, both rules use the **<code>Selector</code> interface** with two concrete implementations: <code>NameSelector</code> (exact-name match) and <code>AttributeSelector</code> (tag-based match against attributes declared in the JSON). This is a small but well-applied use of the Strategy pattern: it lets a single rule apply to "any object tagged *fruit*" without enumerating individual items, which keeps the JSON authoring tractable as content grows.
+	</p>
+	<p>
+	<code>GameEngine</code> evaluates rules by iterating the rule list and asking each one whether it <code>matches</code> the current subject and target. The matching rule's narration becomes the turn's user-visible message, and its rewards are merged into the world state.
+	</p>
+
+	<h2>Command Processing and Game Loop</h2>
+	<p>
+	<code>GameEngine</code> exposes a verb-oriented API — <code>move</code>, <code>pickUp</code>, <code>drop</code>, <code>examine</code>, <code>talk</code>, <code>use</code>, <code>give</code>, <code>buy</code> — each returning a <code>CommandResult</code> carrying narration text, success flag, and a <code>gameFinished</code> indicator. After every successful action, the engine increments the turn counter via <code>GameState</code>, then runs <code>checkEnd</code> to detect turn-limit loss or win conditions (reaching the ending location, picking up a "win-on-pickup" object, or earning enough tickets). Tickets themselves are modeled as an ordinary <code>GameObject</code> accumulated in the player's <code>Inventory</code>, which keeps win-condition logic uniform with all other inventory queries.
+	</p>
+	<p>
+	The <code>GameEngine</code> is exposed as a singleton via <code>getInstance()</code> so that UI components which do not directly hold a reference can still query state — a pragmatic compromise rather than a textbook-pure design choice.
+	</p>
+
+	<h2>View Layer and Threading</h2>
+	<p>
+	The UI is built on Java Swing. <code>MainWindow</code> composes the location image (<code>LocationView</code>), the side <code>CommandPanel</code> of action buttons, the scrolling <code>MessagePanel</code> of narration, the <code>TurnCounterView</code>, and a <code>MenuView</code>.
+	Inventory is shown in a separate <code>InventoryWindow</code>.
+	The <code>GameController</code> is the sole class that knows about both the engine and the widgets: it listens for button clicks and popup-menu selections, translates them into engine commands, then re-paints the view from the returned <code>GameState</code> and <code>CommandResult</code>.
+	</p>
+	<p>
+	<code>Launcher</code> handles thread discipline carefully: world loading (file I/O and JSON parsing) runs on a background thread, while window construction and event handling are dispatched onto Swing's Event Dispatch Thread via <code>SwingUtilities.invokeLater</code>.
+	</p>
+	<h2> Link </h2>
+	<a href="https://github.com/robin10125/School-Group-Game-Project"> Point and Click Adventure Game </a>
       </div>
     </div>
   </article>

@@ -25,11 +25,39 @@
 	This project uses 3 machine learning architectures, created and trained with Tensorflow in Python:
 	<ul>	
 	<li>Cycle-Gan with U-Net model architecture, and with Res-net architecture
-	<!--Describe Cycle GAN -->
+	<p>CycleGAN learns image-to-image translation between two unpaired domains, like landscape photographs and Van Gogh paintings, without needing matched examples. 
+	It does this by training two generators and two discriminators simultaneously: one generator maps photos to paintings, the other maps paintings back to photos. 
+	The key is the cycle-consistency loss, which penalizes the network if translating an image to the other domain and back again fails to reproduce the original. 
+	This loss prevents the generators from collapsing to arbitrary outputs and forces them to preserve the structural content of the input while only changing its style. 
+	The U-Net variant uses skip connections between encoder and decoder layers to retain fine spatial detail, while the Res-net variant uses residual blocks in the bottleneck to stack depth without losing gradient signal.</p>
+
+	<p>The big upside of CycleGAN is that unpaired training data is much easier to obtain than paired data.  Just a dataset of photos and a dataset of paintings is needed. 
+	The downsides are 1, as a GAN, training is unstable and extremely sensitive to the relative learning rates of generator and discriminator, mode collapse is a constant risk.
+	Secondly, the cycle consistency loss becomes a limitation when style transfer requires medium grain changes in the image.  
+	If any compositional information is lost because of large changes in texture and outlines, then the reconstuction doesn't have to create a plausible reconstruction but the exact reconstruction.  
+	This is a big limitation for more extensive style transfers, like anime style faces to real faces.</p>
+	
 	<li>Fast-Neural-Style-Transfer
-	<!--Describe FNST -->
+	<p>Fast Neural Style Transfer trains a feed-forward generator network to apply a single fixed style to any input image in one forward pass. 
+	Instead of optimizing the output image directly the way Gatys-style transfer does, FNST optimizes the weights of the generator using a perceptual loss computed from a pre-trained VGG network. 
+	The loss has two components: a content loss measuring how closely the generator's output matches the input image's high-level VGG features, 
+	and a style loss measuring how closely the Gram matrices of the output's lower-level VGG features match those of a reference style image. 
+	Once trained, the generator can stylize new images in milliseconds, which is what makes it fast compared to the per-image optimization approach of its predecessor.</p>
+
+	<p>FNST is dramatically faster at inference and noticeably more stable to train than a GAN, since there is no adversarial dynamic to balance.  
+	The loss is a stable gradient signal coming from a frozen pretrained network, rather than a moving target.  With no cycle consistency loss, lossy changes are more feasible as well. 
+	The trade-off is flexibility: each trained model is locked to exactly one style, so supporting multiple styles means training and serving multiple models. 
+	</p>
+
 	<li>Conditional Instance normalization GAN
-	<!--Describe CIN GAN -->
+	<p>Conditional Instance Normalization GAN extends the fast style transfer idea so that a single network can produce many different styles. 
+	The trick is in the normalization layers: rather than learning fixed scale and shift parameters after instance normalization, the network learns a separate pair of scale and shift parameters for each style, 
+	and selects the right pair based on a style-id input. The shared convolutional weights end up encoding generic image-translation behavior, while the per-style affine parameters capture the stylistic differences. 
+	Conditioning the model this way lets a single forward pass produce any of N styles by swapping which affine parameters are applied, without any change to the underlying feature extraction.</p>
+
+	<p> 
+	Because the shared backbone is trained jointly across all styles, it eneralizes better and produced visibly cleaner results than any of my single-style models in my experience, due to a much greater amount of training data being available (the model trains on many styles simultaneously), allong style information that is shared accross styles (which is a lot) to be more robustly learned.
+	</p>
 	</ul>
 	<p> I spent a long time trying to get GANs to work.  For an intro to machine learning project, in retrospect, GANS is like baptism by fire.  One of the largest takeaways for making GANS work was finding the optimal learning rates for the generator and discriminator networks, so one doesn't become stronger than the other.  It also became clear as I tried techniques that allowed for more data to be used, like CIN, which allows the model to generalize stylistic choices across many styles, that more data resulted in better results.  This is not revolutionary of course, but it is a real demonstration to me of the effectiveness of leveraging more data.</p>
 
@@ -59,7 +87,7 @@
 	<p>Hajar Emami, Majid Moradi Aliabadi, Ming Dong and Ratna Babu Chinnam. SPA-GAN: Spatial Attention GAN for Image-to-Image Translation https://arxiv.org/abs/1908.06616 </p>
 	<p>Jun-Yan Zhu, Taesung Park, Phillip Isola, Alexei A. Efros. Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks https://arxiv.org/abs/1703.10593 </p>
 	<p>Justin Johnson, Alexandre Alahi, Li Fei-Fei. Perceptual Losses for Real-Time Style Transfer and Super-Resolution. https://arxiv.org/abs/1603.08155 </p>
-	<!-- Reference the Conditional Instance Normalization GAN paper -->
+	<p>Vincent Dumoulin, Jonathon Shlens, Manjunath Kudlur. A Learned Representation For Artistic Style. https://arxiv.org/abs/1610.07629 </p>
       </div>
     </div>
   </article>
