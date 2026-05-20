@@ -13,6 +13,15 @@ window.siteContent = {
 
   researchProjects: [
     {
+      title: "Automating RLVR Environments",
+      summary:
+        "Early research into automating the RLVR pipeline by training models to generate the environments used for training. This page is a short stub for now and can expand as the project develops.",
+      tags: ["RLVR", "Environment generation", "AutoML"],
+      url: "projects/automating-rlvr-environments.html",
+      highlight: true,
+      highlightColor: "#b45309"
+    },
+    {
       title: "Byte Level Models and Word Level Features",
       summary:
         "A sparse autoencoder experiment testing whether a byte-level language model learns word-level features from character prediction. The project looks for selective features tied to specific words, then probes whether feature amplification can steer generation.",
@@ -28,29 +37,25 @@ window.siteContent = {
       title: "Predictive Coding Objectives",
       summary:
         "A modular architecture idea for scaling the number of training objectives by predicting future latent states. The current version explores residual-stream forks, cross-attention reintegration, and whether compressed prediction targets could make the objective more useful.",
+      image: "assets/mpc.png",
+      imageAlt: "Modular Predictive Coding Architecture.",
       tags: ["Predictive coding", "Architectures", "Representation learning"],
       url: "projects/predictive-coding-objectives.html",
       highlight: true,
       highlightColor: "#b45309"
     },
+	
     {
       title: "Hyperconnections and Multi-Token Prediction",
       summary:
         "An experiment plan exploring whether hyperconnections can help models specialize under multi-token prediction objectives. The core comparison is between hyperconnection and residual models under next-token and multi-token training setups.",
+      image: "assets/mhc-graph.png",
+      imageAlt: "Graph comparing two different ML techniques.",
       tags: ["Architectures", "Objective Functions"],
       url: "projects/hyperconnections-mtp.html",
       highlight: true,
       highlightColor: "#b45309"
     },
-    {
-      title: "Automating RLVR Environments",
-      summary:
-        "Early research into automating the RLVR pipeline by training models to generate the environments used for training. This page is a short stub for now and can expand as the project develops.",
-      tags: ["RLVR", "Environment generation", "AutoML"],
-      url: "projects/automating-rlvr-environments.html",
-      highlight: true,
-      highlightColor: "#b45309"
-    }
   ],
 
   techProjects: [
@@ -145,7 +150,7 @@ window.siteContent = {
       summary:
         "I have done a wide assortment of small programs and projects as part of my courses.  These focus on algorithms and data structures, databases, operating systems, data science, object oritented programming, and machine learning.",
       tags: ["Data Structures", "Algorithms", "Databases", "Object Oriented Programming", "Operating Systems", "Data Science"],
-      url: "projects/robot-hand.html"
+      url: "projects/school-projects.html"
     },
   ],
 

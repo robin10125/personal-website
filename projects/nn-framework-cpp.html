@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neural Network in C++ | Robin Hylands</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="project-page">
+  <article class="project-article">
+    <nav class="project-nav">
+      <a class="back-link" href="../index.html">Back to projects</a>
+    </nav>
+
+    <header class="project-header">
+      <p class="eyebrow">CS / Tech Project</p>
+      <h1>Neural Network in C++</h1>
+      <p class="project-summary">I made a neural network framework in C++.</p>
+    </header>
+
+    <div class="project-content">
+      <div class="template-note">
+        <p>
+	This project is a small neural network library written in C++17. It provides the core building blocks needed to define, train, and run feedforward dense neural networks. 
+	A standalone demo program at the repository root trains a multilayer perceptron on MNIST handwritten digits.</p>
+
+<p>	The library follows the conceptual model popularized by PyTorch. A <code>Tensor</code> is the universal data carrier. Operations on tensors record a graph of <code>Node</code> objects, and that graph drives reverse mode automatic differentiation. 
+	A <code>Parameter</code> wraps a <code>Tensor</code> with the metadata needed for optimization. Layers wrap tensor operations, and loss functions, an optimizer, a trainer, and a data loader sit above this and orchestrate the training loop.</p>
+
+<p>	The library has no third party dependencies beyond the C++ standard library. Random numbers come from <code>&lt;random&gt;</code>, file parsing uses <code>&lt;fstream&gt;</code>, and storage is managed through <code>std::shared_ptr</code> and <code>std::unique_ptr</code>. 
+	The build is a single <code>g++</code> invocation that compiles all <code>.cpp</code> files together.
+	</p>
+	<h2>Architecture</h2>
+	<p>
+	The codebase has roughly four conceptual layers:</p>
+
+<p>	at the bottom sits the **tensor and autograd core** in <code>tensor.h</code> and <code>tensor.cpp</code>. This layer defines storage, views, and tensor operations like arithmetic, reductions, matrix multiplication, activation primitives, and the autograd graph. 
+	Almost every other file in the project consumes this header.</p>
+
+<p>	On this sits the **parameter layer**. <code>Parameter</code> lives in <code>parameter.h</code> and <code>parameter.cpp</code> and wraps a learnable tensor. Layers, linear <code>LinearLayer</code> and <code>ReLULayer</code> are thin wrapper objects that own parameters or simply delegate to a tensor activation.</p>
+
+<p>	Above the layers sits the **training infrastructure**. <code>Loss</code> and its subclasses compute scalar loss values and seed the backward pass. <code>Optimizer</code> implements the Adam update rule and owns moment buffers per parameter. <code>Trainer</code> ties the forward pass, backward pass, optimizer, loss, and data loader into a single training loop. <code>Serialization</code> writes parameter tensors to disk and reads them back. <code>DataLoader</code> turns CSV or binary files into batches of tensors.</p>
+
+<p>	Finally we have a **demo application**. <code>mnist_demo.cpp</code> reads the IDX format MNIST files, exports them to CSV, builds a three layer MLP, trains it for several epochs, and reports test accuracy.
+	</p>
+	<h2>The Tensor Type</h2>
+
+<p>	The <code>Tensor</code> class is the main data structure for this framework. I'll start with explaning supporting functions, and finishb with the matrix math <code>Tensor</code> implements.  It holds five pieces of view metadata along with a shared storage block. The storage is a <code>std::shared_ptr&lt;Storage&gt;</code>. 
+	<code>Storage</code> itself owns a <code>std::unique_ptr&lt;float[]&gt;</code> and a size. Multiple <code>Tensor</code> views can share the same storage by holding different shapes, strides, and offsets. This is what allows <code>transpose</code> and <code>reshape</code> to avoid copies.</p>
+
+<p>	The metadata fields are a <code>shape_</code> vector of <code>int64_t</code>, a <code>strides_</code> vector, an <code>offset_</code> measured in elements, and a cached <code>numel_</code>. The <code>numel_</code> field is the product of the shape and is computed once at construction. Contiguity is not stored. 
+	It is checked on demand by comparing the strides against the canonical row major strides for the shape.</p>
+
+<p>	Construction goes through several named factories. <code>Tensor::empty</code> allocates uninitialized storage. <code>Tensor::zeros</code> and <code>Tensor::ones</code> fill the storage with constants. <code>Tensor::randn</code> draws values from a normal distribution from <code>std::random_device</code>. 
+	<code>Tensor::from_vector</code> copies a flat <code>std::vector&lt;float&gt;</code> into a fresh storage with the requested shape. <code>Tensor::scalar</code> produces a rank zero tensor with a single element.</p>
+
+<p>	View operations stay cheap. <code>reshape</code> returns a new <code>Tensor</code> that points at the same storage but uses the new shape's canonical strides. 
+	It only succeeds when the source tensor is already contiguous and the element counts agree. <code>transpose</code> swaps two entries in both the shape and stride vectors and otherwise copies the view. 
+	<code>contiguous</code> allocates a fresh tensor and walks the source tensor in row major order, computing each source offset from the strides. <code>detach</code> produces a tensor that shares storage but drops its autograd history.</p>
+
+<p>	Element access goes through <code>data()</code> plus the offset. The <code>data()</code> method returns <code>storage_->ptr() + offset_</code>. A scalar tensor exposes its single value through <code>item()</code>, which throws when the tensor has any nonzero rank.
+	</p>
+	<p>
+	Tensor arithmetic implements the set of operations needed for basic dense neural networks.  These functions are <code>add</code>, <code>sub</code>, <code>mul</code>, <code>div</code>, <code>exp</code>, <code>log</code>, <code>sum</code>, <code>mean</code>, <code>matmul</code>, <code>relu</code>, and <code>sigmoid</code>.</p>
+
+<p>	The elementwise operations follow a uniform pattern. They check that both inputs share the same shape. They enforce contiguity through <code>ensure_contiguous_or_throw</code>. 
+	They decide whether the result needs gradient tracking by combining the global <code>GradMode::enabled()</code> flag with the <code>requires_grad</code> flag of each input. They allocate an output tensor of the same shape. 
+	They run a single pass over the data. If gradient tracking is on, they attach an autograd node to the output.</p>
+
+<p>	The reductions <code>sum</code> and <code>mean</code> handle two cases. When no axis is supplied, they reduce over every element and produce a scalar. 
+	When an axis is supplied, they compute outer and inner stride products around the chosen axis and run a triply nested loop that accumulates into the output. 
+	<code>mean</code> reuses <code>sum</code> and then scales the result by the reciprocal of the reduced dimension.</p>
+
+<p>	<code>matmul</code> is restricted to two dimensional inputs. It checks that the inner dimensions match, allocates an output of shape <code>{m, n}</code>, and runs the classical triply nested loop. </p>
+
+<p>	<code>relu</code> is a simple max with zero. <code>sigmoid</code> uses the logistic formula. Both operations track gradients through a saved input or saved output.</p>
+
+<p>	Broadcasting support is partial. The arithmetic operations require matching shapes. The helper <code>reduce_to_shape</code> does walk a gradient back to a smaller shape during the backward pass by summing along axes of size one, which lets the autograd nodes for <code>add</code> and <code>sub</code> cope with shape mismatches that would arise if broadcasting were extended later.
+	</p>
+	<h2>Autograd</h2>
+	<p>
+	Autograd is built around a <code>Node</code> interface and a per tensor <code>grad_fn_</code> slot. A <code>Node</code> knows the parent tensors of an operation and how to propagate gradients to them. Every operation that needs to be differentiable defines a <code>Node</code> subclass and attaches an instance to the output tensor through <code>set_grad_fn</code>. 
+	The base <code>Node</code> keeps its parents alive by storing them as <code>Tensor</code> values inside a <code>std::vector&lt;Tensor&gt;</code> field. This keeps the autograd graph reachable until the user releases all tensors that point into it.</p>
+
+<p>	The <code>Tensor</code> class carries the autograd state in three fields. <code>requires_grad_</code> records whether the user wants gradients for the tensor. <code>is_leaf_</code> records whether the tensor was created directly or produced by an operation. 
+	<code>grad_slot_</code> is a <code>std::shared_ptr</code> to a <code>std::shared_ptr&lt;Tensor&gt;</code>. The double indirection lets <code>Tensor</code> copies share a single gradient buffer. 
+	When one copy of a tensor accumulates a gradient, every other view that was copied from the same source sees it through the shared slot.</p>
+
+<p>	Gradient accumulation runs through <code>accumulate_grad</code>. It allocates a zero tensor of the parent's shape on the first call, checks that the incoming gradient is contiguous and has a matching shape, and adds the values element by element. 
+	The public <code>add_grad</code> method forwards to it. The <code>zero_grad</code> method resets the slot to a null pointer so that the next backward pass starts from a clean state.</p>
+
+<p>	The <code>backward</code> method runs reverse mode differentiation. The scalar overload constructs a tensor of value one and forwards to the general overload. The general overload first stores the input gradient in the tensor's slot. 
+	It then performs a depth first traversal of the graph that begins at the current tensor and walks through <code>grad_fn_->parents</code>. The traversal records each visited node and pushes the parent tensors onto a topological order vector. 
+	The reversed vector is then iterated, and each node's <code>backward</code> method is called with the gradient that has been accumulated in its own slot.</p>
+
+<p>	Here is a quick overview of node implementation: <code>AddNode</code> pushes the upstream gradient to both parents, reducing as needed. <code>SubNode</code> does the same but negates the gradient for the second operand. <code>MulNode</code> and <code>DivNode</code> apply the product rule and the quotient rule, building intermediate tensors with <code>mul</code>, <code>sub</code>, and <code>div</code>. <code>ExpNode</code> multiplies the upstream gradient by the exponential of the input. <code>LogNode</code> divides the upstream gradient by the input. <code>MatMulNode</code> performs the two transposed matrix multiplications that produce gradients for the left and right operands. <code>ReluNode</code> zeros out entries where the saved input was non positive. <code>SigmoidNode</code> uses the cached output and the identity <code>sigma * (1 - sigma)</code>.</p>
+
+<p>	Gradient tracking can be turned off globally through <code>GradMode::set_enabled</code>. A thread local boolean controls the flag. <code>NoGradGuard</code> is an RAII helper that flips the flag off on construction and restores it on destruction. The <code>InferenceMode</code> class in <code>inference_mode.h</code> is a thin wrapper around the same mechanism that is documented as the user facing name for the same RAII pattern.
+	</p>
+
+	<h2>The Parameter Class</h2>
+	<p>
+	<code>Parameter</code> is a small adapter around <code>Tensor</code> that captures the metadata needed for optimization. You can think of it as the container that holds tensors for the layers, and handles tensor learnability.  It stores a <code>Tensor</code> value, a <code>std::string</code> name, and a <code>trainable_</code> boolean. The default constructor is deleted, so every <code>Parameter</code> must be created with explicit data.</p>
+
+<p>	The factory methods mirror those on <code>Tensor</code>. <code>Parameter::zeros</code>, <code>Parameter::ones</code>, and <code>Parameter::randn</code> build a tensor with the requested shape and wrap it in a parameter. Each factory forwards the optional name and trainable flag and ensures the underlying tensor has <code>requires_grad</code> set in line with the trainable flag.</p>
+
+<p>	The class exposes the wrapped tensor through <code>tensor()</code> and <code>data()</code>. The two accessors are aliases. <code>grad()</code> returns the underlying tensor's gradient slot, which lets the optimizer read the most recent gradient. <code>trainable()</code> and <code>set_trainable(bool)</code> toggle the <code>requires_grad</code> flag on the wrapped tensor, which freezes or unfreezes the parameter for optimization. <code>zero_grad()</code> clears the gradient slot. <code>detach_()</code> drops the parameter's autograd history while keeping its value.</p>
+
+<p>	The <code>enforce_invariants_</code> helper exists to re establish those internal consistency rules whenever state mutates. The class is used in two places. Layers create parameters in their constructors and expose them through a <code>parameters()</code> method that returns raw pointers. The trainer collects those pointers and forwards them to the optimizer.
+	</p>
+	
+	
+	<h3> MNIST Demo </h3>
+	<p>To show that this framework works, I implemented a demo, defining and training a classifier network with this framework on the MNIST numerical digits dataset.  It builds a small multilayer perceptron (MLP) of shape 784 to 128 to 64 to 10. Two ReLU activations sit between the three linear layers, with cross entropy loss and the Adam optimizer.</p>
+
+<p>	The demo expects the four IDX format MNIST files in a directory named `MNIST` at the repository root. The dataset can be downloaded from the Kaggle mirror linked in the README. The demo reads a subset of four thousand training images and one thousand test images, normalizes pixel values to the unit interval, and writes the subsets to temporary CSV files that the existing `DataLoader` can consume.</p>
+
+<p>	Before training begins, the demo runs the untrained model on eight test samples and prints the predicted class along with a softmax confidence. It then trains for six epochs with a batch size of 64. The data loader is reseeded for each epoch to produce a reproducible shuffle while still varying the order across epochs. After every epoch, the running training loss is printed.</p>
+
+<p>	After training, the demo iterates over the test set inside an `InferenceMode` guard, accumulates the number of correct predictions, and prints the first twelve sample predictions along with the global test accuracy and the average softmax confidence.
+	</p>	
+	<h3> Example Results </h3>
+	<pre><code>MNIST Classification Demo
+	Loading bundled MNIST IDX files from ./MNIST
+	Training subset: 4000 images
+	Test subset:     1000 images
+	Image size:      28x28
+
+	Sample Predictions Before Training
+	----------------------------------
+	   Index    True    Pred     Conf.
+	----------------------------------
+	       0       7       7    0.1249
+	       1       2       7    0.1198
+	       2       1       5    0.1143
+	       3       0       7    0.1536
+	       4       4       7    0.1336
+	       5       1       5    0.1175
+	       6       4       7    0.1194
+	       7       9       7    0.1162
+	----------------------------------
+
+	Training: 6 epochs, batch size 64, Adam lr=0.003
+	------------------------------------------
+	   Epoch   Train Loss (CE)
+	------------------------------------------
+	       1            0.6765
+	       2            0.2540
+	       3            0.1685
+	       4            0.1107
+	       5            0.0814
+	       6            0.0679
+	------------------------------------------
+
+	Sample Predictions
+	----------------------------------
+	   Index    True    Pred     Conf.
+	----------------------------------
+	       0       7       7    1.0000
+	       1       2       2    0.9989
+	       2       1       1    0.9976
+	       3       0       0    1.0000
+	       4       4       4    0.9991
+	       5       1       1    0.9995
+	       6       4       4    0.9968
+	       7       9       9    0.9979
+	       8       5       6    0.9962
+	       9       9       9    0.9950
+	      10       0       0    0.9983
+	      11       6       6    0.9996
+	----------------------------------
+	Test accuracy:   0.9160
+	Avg confidence:  0.9448
+	GradMode after inference: enabled
+	</code></pre>
+	
+	<h2> Parts Implemented by Group Members </h2>
+	<p>
+	While I wrote the parts listed above, the following sections were only architected by me, and were implemented by my group members.  I will mention them in passing.
+	</p>
+
+	<h3>Layers</h3>
+	The layer classes are a thin wrapper around tensor operations.  
+
+	<h3>Optimizer</h3>
+
+<p>	<code>Optimizer</code> in <code>optimizer.h</code> implements the Adam algorithm. It is constructed with a learning rate, a first moment decay rate beta1, and a second moment decay rate beta2. 
+	The defaults match the canonical Adam values of 0.001, 0.9, and 0.999. 
+	The optimizer keeps a list of <code>Parameter*</code> and a hash map of per parameter state.
+	</p>
+
+	<h3>Loss Functions</h3>
+	<p>
+	<code>Loss</code> in <code>loss.h</code> is an abstract base class. 
+	It defines a <code>compute</code> method that takes a prediction and a target tensor and returns a scalar loss tensor, and a <code>backward</code> method that produces the gradient of the loss with respect to the prediction. 
+	The result of the backward call is stored in an internal slot and exposed through <code>get_input_grad</code>.</p>
+
+<p>	Two concrete losses are provided. <code>MSELoss</code> and <code>CrossEntropyLoss</code>.
+	<h3>Trainer</h3>
+	<p>
+	<code>Trainer</code> in <code>trainer.h</code> orchestrates the training loop. It is constructed with a forward function, a backward function, a list of parameters, an optimizer, a loss, an epoch count, and an optional target extraction function.</p>
+
+<p>	<h3>Data Loader</h3></p>
+
+<p>	<code>DataLoader</code> in <code>dataloader.h</code> is responsible for turning files into batches. 
+	It supports two file formats. A CSV format with a numeric header line and one sample per line, and a binary format that begins with two <code>uint64</code> fields for the sample count and feature count, 
+	followed by a flat block of <code>float32</code> values.</p>
+
+<p>	<h3>Serialization</h3>
+	<p>
+	<code>Serialization</code> in <code>serialization.h</code> is a static class with two methods. <code>save</code> opens a binary output stream, walks the supplied parameter list, and writes each parameter as a header consisting of the rank and the shape followed by the raw float data. <code>load</code> reads the same format back and copies the bytes into the matching parameter slots. The format is positional. The parameter order at load time must match the order at save time. The trainer's <code>checkpoint</code> and <code>loadCheckpoint</code> methods are thin wrappers around these calls.
+	</p>
+
+	<h2>Building and Running</h2>
+	<p>
+	The README documents the exact compile command. From the repository root the command is the following.
+	</p>
+	<pre><code>
+	g++ -std=c++17 -O2 -Isrc \
+	    mnist_demo.cpp src/tensor.cpp src/parameter.cpp \
+	    src/linear_layer.cpp src/relu_layer.cpp src/loss.cpp \
+	    src/optimizer.cpp src/dataloader.cpp src/serialization.cpp \
+	    src/trainer.cpp src/inference_mode.cpp \
+	    -o mnist_demo
+
+	./mnist_demo
+	</code></pre>
+	<p>
+	The compile step pulls in every source file the demo touches. There is no build system file. The optimization level is `-O2`. The include path is fixed to `src` so that the demo can refer to headers without a directory prefix. 
+	The `MNIST` directory must be present in the working directory when the binary runs.
+	</p>
+	<h2>Check out the repo</h2>
+	<a href="https://github.com/robin10125/neural-network-framework-in-cpp">Neural Network Framework in cpp</a>
+      </div>
+    </div>
+  </article>
+</body>
+</html>

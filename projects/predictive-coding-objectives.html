@@ -34,7 +34,7 @@
       <p>I have currently tested using cross-attention to join the representations, mimicking how top-down predictions in the brain modulate bottom-up processing. The goal is to, by forcing part of the network to anticipate its own future states, encourage more abstract, transferable representations - potentially improving sample efficiency and allowing models to extract more learning signal from limited data.</p>
 
       <p>Ultimately, this project is an attempt to design a system that can arbitrarily scale in the direction of number of training objectives, with each modular predictive coding objective serving as a single objective.</p>
-
+      <img src="../assets/mpc.png" alt="Diagram showing modular predictive coding architecture.">
       <h2>Results</h2>
       <p>Training a small model on WikiText-103, I observed several encouraging signs. The MPC architecture did not break anything: the model learned to do language modeling. More interestingly, ablation studies showed the beta stream was contributing: removing its cross-attention connection measurably increased loss.</p>
 
