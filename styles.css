@@ -388,7 +388,13 @@ a {
 }
 
 .project-content {
+  max-width: 100%;
+  min-width: 0;
   padding-top: 28px;
+}
+
+.project-content > * {
+  max-width: 100%;
 }
 
 .project-content h2 {
@@ -405,13 +411,45 @@ a {
   margin: 28px 0;
 }
 
+.project-content video,
+.project-content iframe,
+.project-content object,
+.project-content embed,
 .project-content img {
+  box-sizing: border-box;
+  min-width: 0;
+  max-inline-size: 100%;
   max-width: 100%;
-  height: auto;
   display: block;
+  margin-right: auto;
+  margin-left: auto;
+  background: var(--surface);
+}
+
+.project-content img,
+.project-content video {
+  height: auto;
+}
+
+.project-content video {
+  width: 100%;
+  max-width: 640px;
+}
+
+.project-content iframe,
+.project-content object,
+.project-content embed {
+  width: 100%;
+}
+
+.project-content object,
+.project-content embed {
+  min-height: 520px;
+}
+
+.project-content img {
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: var(--surface);
 }
 
 .project-content figcaption {
@@ -429,8 +467,11 @@ a {
 }
 
 .project-content table {
-  width: 100%;
+  display: block;
+  width: max-content;
+  max-width: 100%;
   margin: 18px 0;
+  overflow-x: auto;
   border-collapse: collapse;
   background: var(--surface);
 }
@@ -446,7 +487,50 @@ a {
   background: var(--surface-muted);
 }
 
+.project-content pre {
+  max-width: 100%;
+  margin: 22px 0;
+  padding: 14px 16px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.project-content code {
+  overflow-wrap: break-word;
+  border-radius: 4px;
+  background: rgba(47, 99, 88, 0.08);
+  font-size: 0.92em;
+}
+
+.project-content pre code {
+  overflow-wrap: normal;
+  background: transparent;
+  white-space: pre;
+}
+
+.project-content mjx-container,
+.project-content .MathJax,
+.project-content .katex-display {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.project-content .katex-display {
+  padding-bottom: 2px;
+}
+
 .template-note {
+  width: 100%;
+  inline-size: 100%;
+  max-width: 100%;
+  max-inline-size: 100%;
+  contain: inline-size;
+  overflow: hidden;
   padding: 16px;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -454,6 +538,13 @@ a {
 }
 
 @media (max-width: 900px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
   .site-shell {
     width: calc(100vw - 56px);
     max-width: 760px;
@@ -520,5 +611,61 @@ a {
   .project-card {
     width: 100%;
     max-width: 100%;
+  }
+
+  .project-article {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding-right: 8px;
+    padding-left: 8px;
+    overflow-x: hidden;
+  }
+
+  .template-note {
+    width: calc(100vw - 16px) !important;
+    max-width: calc(100vw - 16px) !important;
+    padding: 10px;
+  }
+
+  .project-content,
+  .project-content > *,
+  .template-note,
+  .template-note > * {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .project-content p,
+  .project-content li,
+  .project-content h2,
+  .project-content h3 {
+    max-inline-size: calc(100vw - 32px);
+    overflow-wrap: anywhere;
+  }
+
+  .project-content video,
+  .project-content iframe,
+  .project-content object,
+  .project-content embed,
+  .project-content img,
+  .project-content pre,
+  .project-content table {
+    inline-size: 100% !important;
+    width: 100% !important;
+    min-inline-size: 0 !important;
+    min-width: 0 !important;
+    max-inline-size: calc(100vw - 32px) !important;
+    max-width: calc(100vw - 32px) !important;
+  }
+
+  .project-content video,
+  .project-content img {
+    height: auto !important;
+  }
+
+  .project-content object,
+  .project-content embed {
+    min-height: 420px;
   }
 }
