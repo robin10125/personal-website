@@ -5,6 +5,10 @@ window.siteContent = {
     details:
       "University of Western Ontario - Bachelor of Science, Specialization in Computer Science - 2026." 
   },
+  about: {
+    details:
+      "I love nature, hard problems, machine learning, and staying active.  My goal is to make the world a better place."
+  },
   contact: {
     email: "robin10125@gmail.com",
     github: "https://github.com/robin10125",

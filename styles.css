@@ -46,6 +46,7 @@ a {
 
 .education-strip h1,
 .education-row h2,
+.about-row h2,
 .section-heading h2,
 .project-article h1,
 .project-article h2,
@@ -86,13 +87,22 @@ a {
   text-decoration: underline;
 }
 
-.education-row {
-  display: block;
+.header-details {
   max-width: 860px;
   margin-top: 8px;
 }
 
-.education-row h2 {
+.education-row,
+.about-row {
+  display: block;
+}
+
+.about-row {
+  margin-top: 16px;
+}
+
+.education-row h2,
+.about-row h2 {
   color: var(--accent);
   font-size: 0.76rem;
   font-weight: 700;
@@ -100,7 +110,8 @@ a {
   text-transform: uppercase;
 }
 
-.education-row p {
+.education-row p,
+.about-row p {
   margin: 8px 0 0;
   color: var(--muted);
   overflow-wrap: anywhere;

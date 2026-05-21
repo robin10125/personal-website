@@ -32,6 +32,11 @@
     educationDetails.textContent = content.education.details;
   }
 
+  const aboutDetails = document.getElementById("about-details");
+  if (aboutDetails && content.about?.details) {
+    aboutDetails.textContent = content.about.details;
+  }
+
   const contactLinks = document.getElementById("contact-links");
   if (contactLinks && content.contact) {
     const links = [
