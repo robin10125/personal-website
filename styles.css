@@ -280,6 +280,15 @@ a {
   -webkit-line-clamp: 7;
 }
 
+.project-card .project-date {
+  display: block;
+  margin: 8px 0 0;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  -webkit-line-clamp: unset;
+}
+
 .compact-grid .project-card p {
   margin: 10px 0 14px;
   font-size: 0.94rem;
@@ -358,6 +367,13 @@ a {
   margin: 18px 0 0;
   color: var(--muted);
   font-size: 1.08rem;
+}
+
+.project-page-date {
+  margin: 14px 0 0;
+  color: var(--accent);
+  font-size: 0.88rem;
+  font-weight: 700;
 }
 
 .project-content {

@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hyperconnections and Multi-Token Prediction | Robin Hylands</title>
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../styles.css">  <script src="../projects.js" defer></script>
+  <script src="../project-dates.js" defer></script>
+  <script src="../site.js" defer></script>
+
 </head>
 <body class="project-page">
   <article class="project-article">
@@ -39,7 +42,7 @@
 	I found that scaling the model up to 250M parameters gave it an insignificant boost over the residual network per token, but still worse performance by time due to inefficiencies.  However, I also found that the MHC learned mixer is essentially near identity.  So it is not effectively learning to use the parallel residual streams. 
 	</p>
 	<p>
-	To fix this, I did some more looking into the implementation details from the literature.  I changed the mHC path from a static context independent transformation to a dynamic input dependent transfornation.
+	To fix this, I did some more looking into the implementation details from the literature.  I changed the mHC path from a static context independent transformation to a dynamic input dependent transformation.
 	</p>
 	<!-- Math block -->	
 	<pre><code>

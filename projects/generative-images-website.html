@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ai Camera | Robin Hylands</title>
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../styles.css">  <script src="../projects.js" defer></script>
+  <script src="../project-dates.js" defer></script>
+  <script src="../site.js" defer></script>
+
 </head>
 <body class="project-page">
   <article class="project-article">
@@ -34,7 +37,7 @@
 	<p>The big upside of CycleGAN is that unpaired training data is much easier to obtain than paired data.  Just a dataset of photos and a dataset of paintings is needed. 
 	The downsides are 1, as a GAN, training is unstable and extremely sensitive to the relative learning rates of generator and discriminator, mode collapse is a constant risk.
 	Secondly, the cycle consistency loss becomes a limitation when style transfer requires medium grain changes in the image.  
-	If any compositional information is lost because of large changes in texture and outlines, then the reconstuction doesn't have to create a plausible reconstruction but the exact reconstruction.  
+	If any compositional information is lost because of large changes in texture and outlines, then the reconstruction doesn't have to create a plausible reconstruction but the exact reconstruction.  
 	This is a big limitation for more extensive style transfers, like anime style faces to real faces.</p>
 	
 	<li>Fast-Neural-Style-Transfer
@@ -56,7 +59,7 @@
 	Conditioning the model this way lets a single forward pass produce any of N styles by swapping which affine parameters are applied, without any change to the underlying feature extraction.</p>
 
 	<p> 
-	Because the shared backbone is trained jointly across all styles, it eneralizes better and produced visibly cleaner results than any of my single-style models in my experience, due to a much greater amount of training data being available (the model trains on many styles simultaneously), allong style information that is shared accross styles (which is a lot) to be more robustly learned.
+	Because the shared backbone is trained jointly across all styles, it generalizes better and produced visibly cleaner results than any of my single-style models in my experience, due to a much greater amount of training data being available (the model trains on many styles simultaneously), allowing style information that is shared across styles (which is a lot) to be more robustly learned.
 	</p>
 	</ul>
 	<p> I spent a long time trying to get GANs to work.  For an intro to machine learning project, in retrospect, GANS is like baptism by fire.  One of the largest takeaways for making GANS work was finding the optimal learning rates for the generator and discriminator networks, so one doesn't become stronger than the other.  It also became clear as I tried techniques that allowed for more data to be used, like CIN, which allows the model to generalize stylistic choices across many styles, that more data resulted in better results.  This is not revolutionary of course, but it is a real demonstration to me of the effectiveness of leveraging more data.</p>
@@ -66,6 +69,8 @@
 	<h2> Web App Details </h2>
 	The webapp server is a NodeJS Express server, also packaged into a Docker image and hosted on Google Cloud Run. Image preprocessing is done on the front end with Tensorflow JS, and then image data is posted to the server. After machine learning inference, the image data postprocessing also happens on the front end.
 	
+	<h2>Want to see the code?</h2>
+	<a href="https://github.com/robin10125/Ai_Camera">Check out the repo!</a>
 	<h2> Datasets used for model training: </h2>
 	https://www.kaggle.com/ipythonx/van-gogh-paintings
 	https://www.kaggle.com/arnaud58/landscape-pictures

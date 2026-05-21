@@ -1,0 +1,20 @@
+window.projectLastUpdated = {
+  "projects/automating-rlvr-environments.html": "2026-05-20",
+  "projects/hyperconnections-mtp.html": "2026-05-20",
+  "projects/character-word-features.html": "2026-05-20",
+  "projects/predictive-coding-objectives.html": "2026-05-20",
+  "projects/generative-images-website.html": "2026-05-20",
+  "projects/algorithmic-social-matchmaking-app.html": "2026-05-20",
+  "projects/nn-framework-cpp.html": "2026-05-20",
+  "projects/algorithmic-video-generation.html": "2026-05-20",
+  "projects/point-and-click-game.html": "2026-05-20",
+  "projects/alchemy-photowall.html": "2026-05-20",
+  "projects/pong.html": "2026-05-20",
+  "projects/shogi-website.html": "2026-05-20",
+  "projects/bidmarket-website.html": "2026-05-20",
+  "projects/numpy-neural-networks.html": "2026-05-20",
+  "projects/robot-hand.html": "2026-05-20",
+  "projects/school-projects.html": "2026-05-20",
+  "projects/momentum.html": "2026-05-20",
+  "projects/alchemy.html": "2026-05-20"
+};

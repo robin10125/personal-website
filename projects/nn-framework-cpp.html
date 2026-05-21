@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Neural Network in C++ | Robin Hylands</title>
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../styles.css">  <script src="../projects.js" defer></script>
+  <script src="../project-dates.js" defer></script>
+  <script src="../site.js" defer></script>
+
 </head>
 <body class="project-page">
   <article class="project-article">
@@ -45,7 +48,7 @@
 	</p>
 	<h2>The Tensor Type</h2>
 
-<p>	The <code>Tensor</code> class is the main data structure for this framework. I'll start with explaning supporting functions, and finishb with the matrix math <code>Tensor</code> implements.  It holds five pieces of view metadata along with a shared storage block. The storage is a <code>std::shared_ptr&lt;Storage&gt;</code>. 
+<p>	The <code>Tensor</code> class is the main data structure for this framework. I'll start with explaining supporting functions, and finish with the matrix math <code>Tensor</code> implements.  It holds five pieces of view metadata along with a shared storage block. The storage is a <code>std::shared_ptr&lt;Storage&gt;</code>. 
 	<code>Storage</code> itself owns a <code>std::unique_ptr&lt;float[]&gt;</code> and a size. Multiple <code>Tensor</code> views can share the same storage by holding different shapes, strides, and offsets. This is what allows <code>transpose</code> and <code>reshape</code> to avoid copies.</p>
 
 <p>	The metadata fields are a <code>shape_</code> vector of <code>int64_t</code>, a <code>strides_</code> vector, an <code>offset_</code> measured in elements, and a cached <code>numel_</code>. The <code>numel_</code> field is the product of the shape and is computed once at construction. Contiguity is not stored. 

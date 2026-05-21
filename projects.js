@@ -22,6 +22,17 @@ window.siteContent = {
       highlightColor: "#b45309"
     },
     {
+      title: "Hyperconnections and Multi-Token Prediction",
+      summary:
+        "An experiment plan exploring whether hyperconnections can help models specialize under multi-token prediction objectives. The core comparison is between hyperconnection and residual models under next-token and multi-token training setups.",
+      image: "assets/mhc-graph.png",
+      imageAlt: "Graph comparing two different ML techniques.",
+      tags: ["Architectures", "Objective Functions"],
+      url: "projects/hyperconnections-mtp.html",
+      highlight: true,
+      highlightColor: "#b45309"
+    },
+    {
       title: "Byte Level Models and Word Level Features",
       summary:
         "A sparse autoencoder experiment testing whether a byte-level language model learns word-level features from character prediction. The project looks for selective features tied to specific words, then probes whether feature amplification can steer generation.",
@@ -41,18 +52,6 @@ window.siteContent = {
       imageAlt: "Modular Predictive Coding Architecture.",
       tags: ["Predictive coding", "Architectures", "Representation learning"],
       url: "projects/predictive-coding-objectives.html",
-      highlight: true,
-      highlightColor: "#b45309"
-    },
-	
-    {
-      title: "Hyperconnections and Multi-Token Prediction",
-      summary:
-        "An experiment plan exploring whether hyperconnections can help models specialize under multi-token prediction objectives. The core comparison is between hyperconnection and residual models under next-token and multi-token training setups.",
-      image: "assets/mhc-graph.png",
-      imageAlt: "Graph comparing two different ML techniques.",
-      tags: ["Architectures", "Objective Functions"],
-      url: "projects/hyperconnections-mtp.html",
       highlight: true,
       highlightColor: "#b45309"
     },
@@ -92,7 +91,7 @@ window.siteContent = {
     {
       title: "Programmatic Video Generation",
       summary:
-        "Generating and editing videos and design assets programatically using Claude Code and Codex.",
+        "Generating and editing videos and design assets programmatically using Claude Code and Codex.",
       tags: ["Programmatic Animation", "Programmatic Design"],
       url: "projects/algorithmic-video-generation.html"
     },
@@ -141,14 +140,14 @@ window.siteContent = {
     {
       title: "Robot Hand",
       summary:
-        "Desinged from scratch and assembled a robotic hand with 3d printer and servos, as well as skin electrodes to allow control by muscle contraction.  Served as an introduction project to computer science.",
+        "Designed from scratch and assembled a robotic hand with 3d printer and servos, as well as skin electrodes to allow control by muscle contraction.  Served as an introduction project to computer science.",
       tags: ["Robotics", "3d printing", "CAD"],
       url: "projects/robot-hand.html"
     },
     {
       title: "Many School Projects",
       summary:
-        "I have done a wide assortment of small programs and projects as part of my courses.  These focus on algorithms and data structures, databases, operating systems, data science, object oritented programming, and machine learning.",
+        "I have done a wide assortment of small programs and projects as part of my courses.  These focus on algorithms and data structures, databases, operating systems, data science, object oriented programming, and machine learning.",
       tags: ["Data Structures", "Algorithms", "Databases", "Object Oriented Programming", "Operating Systems", "Data Science"],
       url: "projects/school-projects.html"
     },

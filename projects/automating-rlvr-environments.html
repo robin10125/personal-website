@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Automating RLVR Environments | Robin Hylands</title>
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../styles.css">  <script src="../projects.js" defer></script>
+  <script src="../project-dates.js" defer></script>
+  <script src="../site.js" defer></script>
+
 </head>
 <body class="project-page">
   <article class="project-article">
@@ -67,8 +70,8 @@
 	I am using Eureka as the inner process of a bi level optimization problem, and tuning the coding model that generates the reward code in the outer loop.  The goal is to tune the model to work better within the Eureka framework. 
 	</p>
 	<p>
-	I am fine tuning DeepSeek's DeepSeek-Coder-V2-Lite-Instruct, a 16B (2.4B active) MOE coding model, using QLora.  The training environment for the inner loop is the Gymnasium Ant5 environmment, chosen for it's relative simplicity, while still being complex enough to benefit from the Eureka framework.  The current experiment I am running is running 20 RLVR iterations, 16 reward
-	candidates per iteration, and 4096 Ant worlds per candidate, so that I can get a basic signal of the effectiveness of my current implemementation.  
+	I am fine tuning DeepSeek's DeepSeek-Coder-V2-Lite-Instruct, a 16B (2.4B active) MOE coding model, using QLora.  The training environment for the inner loop is the Gymnasium Ant5 environment, chosen for it's relative simplicity, while still being complex enough to benefit from the Eureka framework.  The current experiment I am running is running 20 RLVR iterations, 16 reward
+	candidates per iteration, and 4096 Ant worlds per candidate, so that I can get a basic signal of the effectiveness of my current implementation.  
 	</p>
 	<p>	
 	Compute constraints have been a pain point for me with this, so progress has been slower, but expect updates soon!  I am passionate about this project so this will not stop me.  I expect to have an update by the last week of May (2026), and the next iteration of this experiment ready and running by the end of May. 
@@ -104,7 +107,7 @@
 	model. After a candidate reward has induced a policy, that policy is evaluated
 	with the default `Ant-v5` reward. The default environment return becomes the
 	scalar reward assigned to the model completion that generated the candidate
-	reward expression. In other words, the perfomance of the agent on the generated reward is not used to train the model, rather only a separate (in this case default) reward is used.  
+	reward expression. In other words, the performance of the agent on the generated reward is not used to train the model, rather only a separate (in this case default) reward is used.  
 	If we trained the code model on the performance on the generated reward functions, then the code model is incentivized to generate easy to hack reward functions. 
 	</p>
 
@@ -134,11 +137,11 @@
 	</p>
 	<p>
 	I considered using a dense model for even greater memory footprint efficiency, 
-	but the search I did indicated that DeepSeek-Coder-V2-Lite-Instuct is still optimal for my experiment.
+	but the search I did indicated that DeepSeek-Coder-V2-Lite-Instruct is still optimal for my experiment.
 	</p>
 
 	<p>
-	I use Mujuvo Warp to speed up the Ant simulations by running large parallel batches on my GPU.  I am running 4096 Ant worlds per reward candidate, and 16 reward candidates per training iteration.  
+	I use MuJoCo Warp to speed up the Ant simulations by running large parallel batches on my GPU.  I am running 4096 Ant worlds per reward candidate, and 16 reward candidates per training iteration.  
 	</p>
 
 	<p>
