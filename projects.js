@@ -19,7 +19,7 @@ window.siteContent = {
     {
       title: "Automating RLVR Environments",
       summary:
-        "Early research into automating the RLVR pipeline by training models to generate the environments used for training. This page is a short stub for now and can expand as the project develops.",
+        "Early research into automating the RLVR pipeline by training models to generate the environments used for training.",
       tags: ["RLVR", "Environment generation", "AutoML"],
       url: "projects/automating-rlvr-environments.html",
       highlight: true,

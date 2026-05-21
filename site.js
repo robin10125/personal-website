@@ -116,9 +116,24 @@
       .join("");
   };
 
+  const renderResponsiveCompactCards = (containerId, projects, mediaQuery) => {
+    const render = () => {
+      if (mediaQuery.matches) {
+        renderCards(containerId, projects);
+        return;
+      }
+
+      renderStableColumns(containerId, projects);
+    };
+
+    render();
+    mediaQuery.addEventListener("change", render);
+  };
+
   renderCards("research-projects", content.researchProjects || []);
-  renderStableColumns("tech-projects", content.techProjects || []);
-  renderStableColumns("other-projects", content.otherProjects || []);
+  const singleColumnQuery = window.matchMedia("(max-width: 900px)");
+  renderResponsiveCompactCards("tech-projects", content.techProjects || [], singleColumnQuery);
+  renderResponsiveCompactCards("other-projects", content.otherProjects || [], singleColumnQuery);
 
   const projectHeader = document.querySelector(".project-header");
   if (projectHeader) {
