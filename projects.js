@@ -157,6 +157,16 @@ window.siteContent = {
     },
   ],
 
+  workProjects: [
+    {
+      title: "Work Project Placeholder",
+      summary:
+        "Add a work project here by creating a project page in projects/ and adding a matching object to the workProjects array.",
+      tags: ["Work"],
+      url: "projects/technical-project-template.html"
+    }
+  ],
+
   otherProjects: [
     {
       title: "Momentum",

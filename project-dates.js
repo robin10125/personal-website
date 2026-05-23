@@ -15,6 +15,7 @@ window.projectLastUpdated = {
   "projects/numpy-neural-networks.html": "2026-05-20",
   "projects/robot-hand.html": "2026-05-20",
   "projects/school-projects.html": "2026-05-20",
+  "projects/technical-project-template.html": "2026-05-20",
   "projects/momentum.html": "2026-05-20",
   "projects/alchemy.html": "2026-05-20"
 };

@@ -134,12 +134,14 @@
   const singleColumnQuery = window.matchMedia("(max-width: 900px)");
   renderResponsiveCompactCards("tech-projects", content.techProjects || [], singleColumnQuery);
   renderResponsiveCompactCards("other-projects", content.otherProjects || [], singleColumnQuery);
+  renderResponsiveCompactCards("work-projects", content.workProjects || [], singleColumnQuery);
 
   const projectHeader = document.querySelector(".project-header");
   if (projectHeader) {
     const projects = [
       ...(content.researchProjects || []),
       ...(content.techProjects || []),
+      ...(content.workProjects || []),
       ...(content.otherProjects || [])
     ];
     const pathParts = window.location.pathname.split("/").filter(Boolean);

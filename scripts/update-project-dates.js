@@ -36,6 +36,7 @@ const getProjects = () => {
   return [
     ...(content.researchProjects || []),
     ...(content.techProjects || []),
+    ...(content.workProjects || []),
     ...(content.otherProjects || [])
   ].filter((project) => project.url);
 };
