@@ -159,11 +159,11 @@ window.siteContent = {
 
   workProjects: [
     {
-      title: "Work Project Placeholder",
+      title: "R&D with JCHylands Consulting",
       summary:
-        "Add a work project here by creating a project page in projects/ and adding a matching object to the workProjects array.",
+        "Worked on automated transcription and neural embedding search R&D projects.",
       tags: ["Work"],
-      url: "projects/technical-project-template.html"
+      url: "projects/work-projects.html"
     }
   ],
 
