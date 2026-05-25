@@ -162,7 +162,7 @@ window.siteContent = {
       title: "R&D with JCHylands Consulting",
       summary:
         "Worked on automated transcription and neural embedding search R&D projects.",
-      tags: ["Work"],
+      tags: ["Automatic Speech Recognition", "RAG"],
       url: "projects/work-projects.html"
     }
   ],
