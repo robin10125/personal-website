@@ -1,0 +1,12 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/robin/public_html/
+    - /bin/cp index.html "$DEPLOYPATH"
+    - /bin/cp styles.css "$DEPLOYPATH"
+    - /bin/cp site.js "$DEPLOYPATH"
+    - /bin/cp projects.js "$DEPLOYPATH"
+    - /bin/cp project-dates.js "$DEPLOYPATH"
+    - /bin/cp .htaccess "$DEPLOYPATH"
+    - /bin/cp -R assets "$DEPLOYPATH"
+    - /bin/cp -R projects "$DEPLOYPATH"
