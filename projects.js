@@ -1,6 +1,7 @@
 window.siteContent = {
   // Optional per project: add highlight: true and highlightColor: "#2f6358"
-  // to give a card a custom colored border.
+  // to give a card a custom colored border. Add featured: true to make a
+  // card visually larger in the homepage section layout.
   education: {
     details:
       "University of Western Ontario - Bachelor of Science, Specialization in Computer Science - 2026." 
@@ -77,13 +78,13 @@ window.siteContent = {
       "projects/work-projects.html"
     ],
     "Full Stack Web Development": [
-      "projects/robot-hand.html",
       "projects/school-projects.html"
     ],
     "Machine Learning": [
       "projects/school-projects.html"
     ],
     "C++": [
+      "projects/robot-hand.html",
       "projects/school-projects.html"
     ],
     Mathematics: [
@@ -107,18 +108,18 @@ window.siteContent = {
       tags: ["RLVR", "Environment generation", "AutoML"],
       url: "projects/automating-rlvr-environments.html",
       highlight: true,
-      highlightColor: "#b45309"
+      highlightColor: "#b45309",
+      featured: true
     },
     {
       title: "Hyperconnections and Multi-Token Prediction",
       summary:
         "An experiment plan exploring whether hyperconnections can help models specialize under multi-token prediction objectives. The core comparison is between hyperconnection and residual models under next-token and multi-token training setups.",
-      image: "assets/mhc-graph.png",
-      imageAlt: "Graph comparing two different ML techniques.",
       tags: ["Architectures", "Objective Functions"],
       url: "projects/hyperconnections-mtp.html",
       highlight: true,
-      highlightColor: "#b45309"
+      highlightColor: "#b45309",
+      featured: true
     },
     {
       title: "Byte Level Models and Word Level Features",
@@ -153,7 +154,8 @@ window.siteContent = {
       tags: ["Full Stack App", "Machine Learning", "Model Training", "Computer Vision", "Generative Images", "Model Serving"],
       url: "projects/generative-images-website.html",
       highlight: true,
-      highlightColor: "#b45309"
+      highlightColor: "#b45309",
+      featured: true
 
     },
     {
@@ -163,7 +165,8 @@ window.siteContent = {
       tags: ["Data Science", "Clustering", "TF-IDF", "Applied ML"],
       url: "projects/algorithmic-social-matchmaking-app.html",
       highlight: true,
-      highlightColor: "#b45309"
+      highlightColor: "#b45309",
+      featured: true
 
     },
     {
@@ -173,7 +176,8 @@ window.siteContent = {
       tags: ["Machine Learning", "Framework", "C++"],
       url: "projects/nn-framework-cpp.html",
       highlight: true,
-      highlightColor: "#b45309"
+      highlightColor: "#b45309",
+      featured: true
 
     },
     {

@@ -84,10 +84,12 @@
       ? `<p class="project-date">Last updated: ${formattedDate}</p>`
       : "";
     const isHighlighted = project.highlight === true || project.highlight === "true";
+    const isFeatured = project.featured === true || project.featured === "true";
     const highlightColor = project.highlightColor || project.highlightColour || "#2f6358";
     const cardClass = [
       "project-card",
       project.image ? "" : "text-only-card",
+      isFeatured ? "featured-card" : "",
       isHighlighted ? "highlighted-card" : ""
     ]
       .filter(Boolean)
@@ -96,13 +98,15 @@
 
     return `
       <a class="${cardClass}" href="${project.url}"${highlightStyle}>
-        ${image}
         <div class="card-body">
           <h3>${project.title}</h3>
-          ${dateMarkup}
           <p>${project.summary}</p>
-          ${tags}
+          <div class="card-meta">
+            ${dateMarkup}
+            ${tags}
+          </div>
         </div>
+        ${image}
       </a>
     `;
   };
@@ -148,12 +152,13 @@
 
   renderCards("research-projects", content.researchProjects || []);
   const singleColumnQuery = window.matchMedia("(max-width: 900px)");
-  renderResponsiveCompactCards("tech-projects", content.techProjects || [], singleColumnQuery);
-  renderResponsiveCompactCards("other-projects", content.otherProjects || [], singleColumnQuery);
-  renderResponsiveCompactCards("work-projects", content.workProjects || [], singleColumnQuery);
+  renderCards("tech-projects", content.techProjects || []);
+  renderCards("other-projects", content.otherProjects || []);
+  renderCards("work-projects", content.workProjects || []);
 
   const projectScrollArea = document.querySelector(".project-sections");
-  const projectTabs = document.querySelectorAll(".project-tabs a");
+  const projectTabsNav = document.querySelector(".project-tabs");
+  const getProjectTabs = () => document.querySelectorAll(".project-tabs a");
   const fixedProjectSections = () =>
     Array.from(document.querySelectorAll(".project-section:not(.filtered-panel)"));
   const skillButtons = document.querySelectorAll(".skill-filter");
@@ -210,6 +215,31 @@
     }
   };
 
+  const removeFilteredTab = () => {
+    document.getElementById("filtered-projects-tab")?.remove();
+  };
+
+  const renderFilteredTab = (skill) => {
+    removeFilteredTab();
+
+    if (!skill || !projectTabsNav) {
+      return;
+    }
+
+    const tab = document.createElement("a");
+    tab.id = "filtered-projects-tab";
+    tab.className = "filtered-tab";
+    tab.href = "#filtered-projects-heading";
+    tab.textContent = skill;
+    tab.addEventListener("click", (event) => {
+      if (scrollToProjectSection(tab.hash)) {
+        event.preventDefault();
+        window.history.replaceState(null, "", tab.hash);
+      }
+    });
+    projectTabsNav.prepend(tab);
+  };
+
   const updateSkillButtonState = () => {
     skillButtons.forEach((button) => {
       const isActive = normalizeLabel(button.dataset.skill || "") === normalizeLabel(activeSkill);
@@ -249,6 +279,7 @@
     filteredSection.querySelector(".clear-filter")?.addEventListener("click", () => {
       activeSkill = "";
       removeFilteredSection();
+      removeFilteredTab();
       updateSkillButtonState();
       updateActiveProjectTab();
     });
@@ -256,6 +287,7 @@
 
   const setSkillFilter = (skill) => {
     activeSkill = normalizeLabel(activeSkill) === normalizeLabel(skill) ? "" : skill;
+    renderFilteredTab(activeSkill);
     renderFilteredProjects(activeSkill);
     updateSkillButtonState();
 
@@ -275,7 +307,7 @@
   updateSkillButtonState();
 
   const setActiveProjectTab = (hash) => {
-    projectTabs.forEach((tab) => {
+    getProjectTabs().forEach((tab) => {
       const isActive = tab.hash === hash;
       tab.classList.toggle("active-tab", isActive);
 
@@ -324,7 +356,10 @@
   };
 
   const updateActiveProjectTab = () => {
-    const projectSections = fixedProjectSections();
+    const filteredSection = document.getElementById("filtered-project-section");
+    const projectSections = filteredSection
+      ? [filteredSection, ...fixedProjectSections()]
+      : fixedProjectSections();
     if (!projectScrollArea || !projectSections.length) {
       return;
     }
@@ -382,7 +417,7 @@
     }
   };
 
-  projectTabs.forEach((tab) => {
+  getProjectTabs().forEach((tab) => {
     tab.addEventListener("click", (event) => {
       if (scrollToProjectSection(tab.hash)) {
         event.preventDefault();
