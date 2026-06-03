@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Algorithmic Social Matchmaking | Robin Hylands</title>
+  <link rel="stylesheet" href="../styles.css">  <script src="../projects.js" defer></script>
+  <script src="../project-dates.js" defer></script>
+  <script src="../site.js" defer></script>
+
+</head>
+<body class="project-page">
+  <article class="project-article">
+    <nav class="project-nav">
+      <a class="back-link" href="../index.html">Back to projects</a>
+    </nav>
+
+    <header class="project-header">
+      <p class="eyebrow">CS / Tech Project</p>
+      <h1>Algorithmic Social Matchmaking</h1>
+      <p class="project-summary">I designed novel and effective matchmaking algorithm.</p>
+    </header>
+
+    <div class="project-content">
+      <div class="template-note">
+        <p>Last year, some friends and I were planning a big demo day featuring creatives and builders from our co working community.  My friend asked me to create a matchmaking thing for this event.  We had being collecting data from a questionnaire that attendees filled out.  I did the usual thing, generating embeddings from these responses and then doing basic clustering algorithms, like knn, on these embeddings using cosine distance as a metric.  This produced the standard, expected output that wasn't particularly inspiring.</p>
+	<p>My first thought was to use an algorithm that would allow fine grain control of cluster size.  I had been dating an intro machine learning course at the time and saw that one of the techniques we were learning was quite suitable for this: hierarchical clustering [insert description of hierarchical clustering here].  This allowed for easy, fine grained control over cluster, and thus matchmaking group size. </p>
+	<p> This was an improvement, but it still didn't feel special. </p>
+	<p> I was messing around with the data, the clustering, and finding patterns, and wasn't really getting anywhere with these normal, obvious techniques. But then the day before the event, I had a sudden burst of inspiration.</p>
+	<p> I thought, let's try using LLMs as an agent (this was just before CC, codex) to process this data for us, and then do some more powerful techniques with this.  I fed the data into LLMs on a loop with a single prompt structure.  I gave the LLM a running list of mentioned topics and themes, and had it analyze each response and extract all the topics and themes within.  If these matched the listed themes, I would increment the score of each match; otherwise I would add the new topics and themes to the running list.  This gave us a much more legible and powerful analysis of the data than simple embeddings.</p>
+	<p> I again took inspiration from my machine learning class: we had just learned about Term Frequency - Inverse Document Frequency analysis (TF-IDF).  I had a bunch of documents (responses) and a bunch of terms (topics and themes).  I had been thinking about optimal matchmaking, and what makes for an instant connection, and I realized that having shared **special** interests helps produce a stronger connection.  Everybody drinks water and eats food, and everybody at builder events are interested in technology.  Matching people on these topics and themes wouldn't be very special, and really just feels random.  So I decided to make the automated matchmaking pipeline tuned to value unique shared interests very highly and match groups based mostly off this criteria. </p>
+	<p> The results were even better than I expected.  These unique interests are often strong features of our identity, and it isn't often that we find people who we can share them with.  To match together people who are community builders, or audio technologists, or some other rare niche creates a wonderful serendipity </p>
+	<p> So by the day of the event I had a unique and special matchmaking algorithm that worked in practice much better than the standard approaches. </p>
+	<h2> Next Steps </h2>
+	<p> The next steps for this project is to systematize it and package it so that other events can easily use it. </p>
+	<h2> Link to some of the code for this project </h2>
+	<!-- Format link below -->
+	<a href="https://github.com/mlekhi/alchemy-matchmaking">Alchemy Matchmaking</a>
+    </div>
+    </div>
+  </article>
+</body>
+</html>

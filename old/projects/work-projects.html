@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Some Work Projects | Robin Hylands</title>
+  <link rel="stylesheet" href="../styles.css">  <script src="../projects.js" defer></script>
+  <script src="../project-dates.js" defer></script>
+  <script src="../site.js" defer></script>
+
+</head>
+<body class="project-page">
+  <article class="project-article">
+    <nav class="project-nav">
+      <a class="back-link" href="../index.html">Back to projects</a>
+    </nav>
+
+    <header class="project-header">
+      <p class="eyebrow">CS / Tech Project</p>
+      <h1>Some Work Projects</h1>
+      <p class="project-summary">I designed an implemented a real time speech to text transcription pipeline, as well as as well as experiments with improving neural embedding based search/retrieval techniques..</p>
+    </header>
+
+    <div class="project-content">
+      <div class="template-note">
+        <p>I made a real time speech to text transcription program in Python using OpenAI's whisper models, combined with automatic speech recognition (ASR).  I used a rolling audio window sliding forward at an abritrary frequency to capture patches of audio data, where were then condensed using ASR into only speaking parts, and then fed into a Whisper model for infernence. </p>
+	<p> This gave a series of semi overlapping text chunks, which were then recombined into a single coherent stream using approximate string matching algorithms, timestamp-aware word alignment.</p>
+	<p> I also designed diverse beam search retrieval augmented generation pipeline to pair with this, to generate a diverse range of information related to the real time transcription.  This uses diversity metrics to augment beam search to ensure that each branch is realtively unique.  Then each diverse branch is used for embedding based similarity search. </p>
+      </div>
+    </div>
+  </article>
+</body>
+</html>

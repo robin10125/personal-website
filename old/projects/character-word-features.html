@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Character Models and Word Features | Robin Hylands</title>
+  <link rel="stylesheet" href="../styles.css">  <script src="../projects.js" defer></script>
+  <script src="../project-dates.js" defer></script>
+  <script src="../site.js" defer></script>
+
+</head>
+<body class="project-page">
+  <article class="project-article">
+    <nav class="project-nav">
+      <a class="back-link" href="../index.html">Back to projects</a>
+    </nav>
+
+    <header class="project-header">
+      <p class="eyebrow">Research Project</p>
+      <h1>Can a model trained to predict letters learn to represent words?</h1>
+      <p class="project-summary">A sparse autoencoder experiment testing whether a byte-level language model learns word-level features from character prediction.</p>
+    </header>
+
+    <div class="project-content">
+      <p>I recently did a fun weekend experiment to test out the use of sparse autoencoders for feature detection. Specifically, I train a model to predict individual characters from the TinyStories dataset, and then use feature detection to test if the model has learned to represent individual words from this simple objective. The purpose of this experiment is to build an intuition on the development of features, and more importantly for me, to start experimenting in the space of emergent language abilities. That is to say, it is a first and smallest step in the direction of having models learn language as a higher order abstraction of environmental features.</p>
+
+      <p>I am interested in this because I am interested in how we as humans can learn distinct concepts that we can put words to from raw environmental data - to the extent that language emerges naturally from this process. I think this is an interesting metric to pose for models. If a model can produce language as an emergent property of modeling environmental data, operating as an agent in that environment, and performing social functions with other agents, then it surely has achieved impressive levels of intelligence.</p>
+
+      <p>The scope of this experiment does not reach this yet. This is a first and smallest step in my exploration of this idea.</p>
+
+      <h2>Experimental Design</h2>
+      <h2>Transformer Model</h2>
+      <p>I trained a simple GPT-2 style model to predict character level byte tokens from the TinyStories dataset. I trained the model for 6000 steps, with a batch size of 32, and context length of 512, totalling around 100,000,000 tokens. The model was trained on a single Tesla T4 GPU.</p>
+
+      <table>
+        <thead>
+          <tr><th>Hyperparameter</th><th>Value</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Vocab Size</td><td>256</td></tr>
+          <tr><td>Context Length</td><td>512</td></tr>
+          <tr><td>Embedding Dimension</td><td>512</td></tr>
+          <tr><td>Attention Heads</td><td>8</td></tr>
+          <tr><td>Layers</td><td>8</td></tr>
+          <tr><td>FFN Hidden Dimension</td><td>2048</td></tr>
+          <tr><td>Dropout</td><td>0.1</td></tr>
+          <tr><td>Normalization</td><td>RMSNorm</td></tr>
+          <tr><td>Positional Embedding</td><td>RoPE</td></tr>
+          <tr><td>Optimizer</td><td>AdamW</td></tr>
+          <tr><td>Batch Size</td><td>32</td></tr>
+          <tr><td>Training Steps</td><td>6000</td></tr>
+          <tr><td>Gradient Accumulation Steps</td><td>4</td></tr>
+          <tr><td>Learning Rate</td><td>1e-3</td></tr>
+          <tr><td>Weight Decay</td><td>0.1</td></tr>
+          <tr><td>Warmup Steps</td><td>300</td></tr>
+          <tr><td>Learning Rate Scheduler</td><td>Cosine</td></tr>
+        </tbody>
+      </table>
+
+      <p>The model reached a final validation loss of 0.5750 after training, which I figured would be sufficient for the task at hand. The text generation is thematically relevant to the prompt but also somewhat incoherent. Notably, the byte level generation produces real words, spelled correctly and relevant to the context.</p>
+
+      <blockquote>
+        <p>Prompt: In a world where artificial intelligence</p>
+        <p>Output: In a world where artificial intelligence and a whale wanted to be saved!</p>
+        <p>The fish and the whale worked together to build a river. Soon the whale was sailing around the river with soap!</p>
+      </blockquote>
+
+      <figure>
+        <img src="../assets/char-feature-model-val-loss.png" alt="Loss curve for character prediction model.">
+      </figure>
+
+      <h2>Sparse Autoencoder</h2>
+      <p>I then trained the SAE. I used <a href="https://cdn.openai.com/papers/sparse-autoencoders.pdf">top-k activation selection to enforce sparsity</a>. I used a 32x expansion factor, for a hidden dimension of 16384, and a k value of 32.</p>
+
+      <table>
+        <thead>
+          <tr><th>Hyperparameter</th><th>Value</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Expansion Factor</td><td>32</td></tr>
+          <tr><td>Hidden Dimension</td><td>16384</td></tr>
+          <tr><td>k</td><td>32</td></tr>
+          <tr><td>Learning Rate</td><td>1e-4</td></tr>
+          <tr><td>Batch Size</td><td>4096</td></tr>
+          <tr><td>Training Steps</td><td>30,000</td></tr>
+          <tr><td>Warmup Steps</td><td>100</td></tr>
+          <tr><td>Resample Dead Neurons</td><td>True</td></tr>
+          <tr><td>Dead Neuron Threshold</td><td>10000</td></tr>
+        </tbody>
+      </table>
+
+      <p>One mistake I made was only collecting 250,000 activations for feature detection, which is probably 100x too few given the number of training steps. I do not think this really affects my results for the purposes of this experiment, but it is something I will be more careful about next time. The SAE model reached a final reconstruction loss of 0.6197, and an auxiliary top-k loss of 0.4488.</p>
+
+      <figure>
+        <img src="../assets/SAE-recon-loss.png" alt="Training stats for SAE model.">
+        <figcaption>Training stats for the SAE model. These graphs reflect performance on the training set.</figcaption>
+      </figure>
+
+      <blockquote>
+        <p>Total features: 16384<br>Dead features, never activated: 2844<br>Rare features, less than 0.1%: 10311<br>Mean activation frequency: 0.0020<br>Median activation frequency: 0.0007</p>
+      </blockquote>
+
+      <p>I then looked to find which features activate very strongly to particular words, and which features activate exclusively to particular words. I looked at the most common words in my dataset, and found the features that activate for tokens towards the end of the word. This roughly corresponds to the presence of features that can detect the end of a word. A second experiment looks at the middle of the word and examines the features produced there.</p>
+
+      <figure>
+        <img src="../assets/feature-activation-frequency.png" alt="Distribution of feature activations and their frequency.">
+      </figure>
+
+      <h2>Results and Discussion</h2>
+      <p>Overall I found 262 words that have unique highly selective features active strongly for them. My analysis so far is not super deep, but superficially these results seem strong with respect to my hypothesis. I am impressed by how many words have dedicated highly selective features.</p>
+
+      <p>We already knew this, but this helps confirm the idea that abstract prediction targets can emerge organically from training on low level prediction tasks. This is directly analogous to the traditional mechanistic interpretability tests of finding high order concepts from a model trained to predict word level tokens.</p>
+
+      <h2>Next Step</h2>
+      <p>Simply finding features that correspond uniquely to particular words at the end of the word is not enough to show that the model is really using word level abstractions. These features could simply be features corresponding to sequences of characters that tell the model to implement a space and thus end a word. I am looking to show the model developing a word level abstraction of the data, and to do that I must show that the model uses word level features to make word level predictions.</p>
+
+      <h2>Feature Injection and Steering</h2>
+      <p>To more robustly test the hypothesis that these features are useful word level abstractions, I tried a simple feature injection experiment. I took several highly selective features, and amplified their activation in the forward pass of the GPT model to see if this would bias the outputs to the correlated words.</p>
+
+      <p>Overall the results are noisy due to the small scale of this experiment, and somewhat qualitative. However, an interesting result came from amplifying feature 7149, highly selective for the word "little". At no amplification, the text generation does not make use of the word "little"; however, at higher levels of amplification, we see "little" start appearing from the same initial prompts.</p>
+
+      <p><a href="https://github.com/robin10125/robin10125.github.io/blob/main/code/char_gpt_sae_training.ipynb">Check out the notebook for more details and the implementation.</a></p>
+    </div>
+  </article>
+</body>
+</html>

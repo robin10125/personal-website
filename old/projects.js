@@ -9,90 +9,6 @@ window.siteContent = {
     details:
       "I love nature, hard problems, machine learning, and staying active.  My goal is to make the world a better place."
   },
-  skills: [
-    "Machine Learning",
-    "Computer Science",
-    "Data Science",
-    "C++",
-    "Python",
-    "Java",
-    "Mathematics",
-    "Full Stack Web Development",
-    "Community Building",
-  ],
-  skillTagMap: {
-    "RLVR": ["Machine Learning"],
-    "Environment generation": ["Machine Learning"],
-    "AutoML": ["Machine Learning"],
-    "Architectures": ["Machine Learning"],
-    "Objective Functions": ["Machine Learning"],
-    "SAEs": ["Machine Learning"],
-    "Mechanistic interpretability": ["Machine Learning"],
-    "Representation Learning": ["Machine Learning"],
-    "Representation learning": ["Machine Learning"],
-    "Predictive coding": ["Machine Learning"],
-    "Model Training": ["Machine Learning"],
-    "Computer Vision": ["Machine Learning"],
-    "Generative Images": ["Machine Learning"],
-    "Model Serving": ["Machine Learning"],
-    "Applied ML": ["Machine Learning", "Data Science"],
-    "Clustering": ["Machine Learning", "Data Science"],
-    "TF-IDF": ["Machine Learning", "Data Science"],
-    "Framework": ["Computer Science"],
-    "Programmatic Animation": ["Computer Science"],
-    "Programmatic Design": ["Computer Science"],
-    "Object Oriented Programming": ["Computer Science", "Java"],
-    "Video Game": ["Computer Science"],
-    "Full Stack App": ["Full Stack Web Development", "Computer Science"],
-    "Full Stack": ["Full Stack Web Development", "Computer Science"],
-    "AWS": ["Full Stack Web Development", "Computer Science"],
-    "Web Sockets": ["Full Stack Web Development", "Computer Science"],
-    "Javascript": ["Full Stack Web Development", "Computer Science"],
-    "RL": ["Machine Learning", "Computer Science"],
-    "Q Learning": ["Machine Learning", "Computer Science"],
-    "Robotics": ["Computer Science"],
-    "3d printing": ["Computer Science"],
-    "CAD": ["Computer Science"],
-    "Data Structures": ["Computer Science"],
-    "Algorithms": ["Computer Science"],
-    "Databases": ["Computer Science"],
-    "Operating Systems": ["Computer Science", "C++"],
-    "Automatic Speech Recognition": ["Machine Learning", "Computer Science"],
-    "RAG": ["Machine Learning", "Computer Science"],
-    "Leadership": ["Community Building"],
-    "Community": ["Community Building"]
-  },
-  skillProjectMap: {
-    Python: [
-      "projects/automating-rlvr-environments.html",
-      "projects/hyperconnections-mtp.html",
-      "projects/character-word-features.html",
-      "projects/predictive-coding-objectives.html",
-      "projects/generative-images-website.html",
-      "projects/algorithmic-social-matchmaking-app.html",
-      "projects/algorithmic-video-generation.html",
-      "projects/pong.html",
-      "projects/numpy-neural-networks.html",
-      "projects/school-projects.html",
-      "projects/work-projects.html"
-    ],
-    "Full Stack Web Development": [
-      "projects/robot-hand.html",
-      "projects/school-projects.html"
-    ],
-    "Machine Learning": [
-      "projects/school-projects.html"
-    ],
-    "C++": [
-      "projects/school-projects.html"
-    ],
-    Mathematics: [
-      "projects/school-projects.html",
-      "projects/generative-images-website.html",
-      "projects/nn-framework-cpp.html",
-      "projects/numpy-neural-networks.html"
-    ]
-  },
   contact: {
     email: "robin10125@gmail.com",
     github: "https://github.com/robin10125",
@@ -236,7 +152,7 @@ window.siteContent = {
       title: "Many School Projects",
       summary:
         "I have done a wide assortment of small programs and projects as part of my courses.  These focus on algorithms and data structures, databases, operating systems, data science, object oriented programming, and machine learning.",
-      tags: ["Data Structures", "Algorithms", "Databases", "Object Oriented Programming", "Operating Systems", "Data Science", "Mathematics"],
+      tags: ["Data Structures", "Algorithms", "Databases", "Object Oriented Programming", "Operating Systems", "Data Science"],
       url: "projects/school-projects.html"
     },
   ],

@@ -9,53 +9,69 @@
   <script src="project-dates.js" defer></script>
   <script src="site.js" defer></script>
 </head>
-<body>
+<body class="homepage">
   <main class="site-shell">
     <section class="education-strip" aria-labelledby="site-title">
       <div class="title-row">
         <h1 id="site-title">Robin Hylands</h1>
         <nav class="contact-links" id="contact-links" aria-label="Contact links"></nav>
       </div>
-      <div class="header-details">
-        <div class="education-row">
-          <h2 id="education-heading">Education</h2>
-          <p id="education-details">Education details placeholder. Edit this text in projects.js.</p>
-        </div>
-        <div class="about-row">
-          <h2 id="about-heading">About</h2>
-          <p id="about-details">About details placeholder. Edit this text in projects.js.</p>
-        </div>
-      </div>
     </section>
 
-    <section class="project-layout" aria-label="Projects">
-      <section class="panel research-panel" aria-labelledby="research-heading">
-        <div class="section-heading">
-          <h2 id="research-heading">Research Projects</h2>
+    <section class="project-layout" aria-label="Homepage content">
+      <section class="project-column" aria-label="Projects">
+        <nav class="project-tabs" aria-label="Project sections">
+          <a href="#research-heading">Research</a>
+          <a href="#tech-heading">Technical</a>
+          <a href="#other-heading">Other</a>
+          <a href="#work-heading">Work</a>
+        </nav>
+
+        <div class="project-sections">
+          <section class="panel project-section research-panel" aria-labelledby="research-heading">
+            <div class="section-heading">
+              <h2 id="research-heading">Research Experiments</h2>
+            </div>
+            <div class="card-grid" id="research-projects"></div>
+          </section>
+
+          <section class="panel project-section tech-panel" aria-labelledby="tech-heading">
+            <div class="section-heading">
+              <h2 id="tech-heading">Technical Projects</h2>
+            </div>
+            <div class="card-grid compact-grid" id="tech-projects"></div>
+          </section>
+
+          <section class="panel project-section other-panel" aria-labelledby="other-heading">
+            <div class="section-heading">
+              <h2 id="other-heading">Other Projects</h2>
+            </div>
+            <div class="card-grid compact-grid" id="other-projects"></div>
+          </section>
+
+          <section class="panel project-section work-panel" aria-labelledby="work-heading">
+            <div class="section-heading">
+              <h2 id="work-heading">Work Projects</h2>
+            </div>
+            <div class="card-grid compact-grid" id="work-projects"></div>
+          </section>
         </div>
-        <div class="card-grid" id="research-projects"></div>
-
-        <section class="other-panel" aria-labelledby="other-heading">
-          <div class="section-heading">
-            <h2 id="other-heading">Other Projects</h2>
-          </div>
-          <div class="card-grid compact-grid" id="other-projects"></div>
-        </section>
-
-        <section class="work-panel" aria-labelledby="work-heading">
-          <div class="section-heading">
-            <h2 id="work-heading">Work Projects</h2>
-          </div>
-          <div class="card-grid compact-grid" id="work-projects"></div>
-        </section>
       </section>
 
-      <aside class="right-column">
-        <section class="panel tech-panel" aria-labelledby="tech-heading">
-          <div class="section-heading">
-            <h2 id="tech-heading">Technical Projects</h2>
+      <aside class="right-column" aria-label="Profile details">
+        <section class="panel profile-panel">
+          <div class="education-row">
+            <h2 id="education-heading">Education</h2>
+            <p id="education-details">Education details placeholder. Edit this text in projects.js.</p>
           </div>
-          <div class="card-grid compact-grid" id="tech-projects"></div>
+          <div class="about-row">
+            <h2 id="about-heading">About</h2>
+            <p id="about-details">About details placeholder. Edit this text in projects.js.</p>
+          </div>
+          <div class="skills-row">
+            <h2 id="skills-heading">Skills</h2>
+            <ul class="skills-list" id="skills-list"></ul>
+          </div>
         </section>
       </aside>
     </section>

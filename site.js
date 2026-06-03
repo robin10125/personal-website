@@ -26,6 +26,7 @@
   };
 
   const getProjectDate = (url) => projectDates[normalizeProjectUrl(url)];
+  const normalizeLabel = (label) => label.toLowerCase().trim();
 
   const educationDetails = document.getElementById("education-details");
   if (educationDetails && content.education?.details) {
@@ -35,6 +36,21 @@
   const aboutDetails = document.getElementById("about-details");
   if (aboutDetails && content.about?.details) {
     aboutDetails.textContent = content.about.details;
+  }
+
+  const skillsList = document.getElementById("skills-list");
+  if (skillsList && content.skills?.length) {
+    skillsList.innerHTML = content.skills
+      .map(
+        (skill) => `
+          <li>
+            <button class="skill-filter" type="button" data-skill="${skill}" title="Filter projects by ${skill}">
+              <span>${skill}</span>
+            </button>
+          </li>
+        `
+      )
+      .join("");
   }
 
   const contactLinks = document.getElementById("contact-links");
@@ -135,6 +151,271 @@
   renderResponsiveCompactCards("tech-projects", content.techProjects || [], singleColumnQuery);
   renderResponsiveCompactCards("other-projects", content.otherProjects || [], singleColumnQuery);
   renderResponsiveCompactCards("work-projects", content.workProjects || [], singleColumnQuery);
+
+  const projectScrollArea = document.querySelector(".project-sections");
+  const projectTabs = document.querySelectorAll(".project-tabs a");
+  const fixedProjectSections = () =>
+    Array.from(document.querySelectorAll(".project-section:not(.filtered-panel)"));
+  const skillButtons = document.querySelectorAll(".skill-filter");
+  const skillTagMap = content.skillTagMap || {};
+  const skillProjectMap = content.skillProjectMap || {};
+  let activeSkill = "";
+
+  const groupedProjects = [
+    { key: "research", projects: content.researchProjects || [] },
+    { key: "tech", projects: content.techProjects || [] },
+    { key: "other", projects: content.otherProjects || [] },
+    { key: "work", projects: content.workProjects || [] }
+  ];
+
+  const getMappedSkillsForProject = (project, groupKey) => {
+    const mappedSkills = new Set();
+    const projectUrl = normalizeProjectUrl(project.url);
+
+    (project.tags || []).forEach((tag) => {
+      if (content.skills?.some((skill) => normalizeLabel(skill) === normalizeLabel(tag))) {
+        mappedSkills.add(tag);
+      }
+
+      (skillTagMap[tag] || []).forEach((skill) => mappedSkills.add(skill));
+    });
+
+    if (groupKey === "tech") {
+      mappedSkills.add("Computer Science");
+    }
+
+    Object.entries(skillProjectMap).forEach(([skill, urls]) => {
+      if ((urls || []).some((url) => normalizeProjectUrl(url) === projectUrl)) {
+        mappedSkills.add(skill);
+      }
+    });
+
+    return Array.from(mappedSkills);
+  };
+
+  const getProjectsForSkill = (skill) =>
+    groupedProjects.flatMap((group) =>
+      group.projects.filter((project) =>
+        getMappedSkillsForProject(project, group.key).some(
+          (mappedSkill) => normalizeLabel(mappedSkill) === normalizeLabel(skill)
+        )
+      )
+    );
+
+  const removeFilteredSection = () => {
+    const filteredSection = document.getElementById("filtered-project-section");
+
+    if (filteredSection) {
+      filteredSection.remove();
+    }
+  };
+
+  const updateSkillButtonState = () => {
+    skillButtons.forEach((button) => {
+      const isActive = normalizeLabel(button.dataset.skill || "") === normalizeLabel(activeSkill);
+      button.classList.toggle("active-skill", isActive);
+      button.setAttribute("aria-pressed", isActive ? "true" : "false");
+      button.title = isActive
+        ? `Clear ${button.dataset.skill} project filter`
+        : `Filter projects by ${button.dataset.skill}`;
+    });
+  };
+
+  const renderFilteredProjects = (skill) => {
+    removeFilteredSection();
+
+    if (!skill || !projectScrollArea) {
+      return;
+    }
+
+    const matchingProjects = getProjectsForSkill(skill);
+    const filteredSection = document.createElement("section");
+    filteredSection.className = "panel project-section filtered-panel";
+    filteredSection.id = "filtered-project-section";
+    filteredSection.setAttribute("aria-labelledby", "filtered-projects-heading");
+    filteredSection.innerHTML = `
+      <div class="section-heading filtered-heading">
+        <div>
+          <p class="eyebrow">Filtered Projects</p>
+          <h2 id="filtered-projects-heading">${skill}</h2>
+        </div>
+        <button class="clear-filter" type="button">Clear filter</button>
+      </div>
+      <div class="card-grid" id="filtered-projects"></div>
+    `;
+
+    projectScrollArea.prepend(filteredSection);
+    renderCards("filtered-projects", matchingProjects);
+    filteredSection.querySelector(".clear-filter")?.addEventListener("click", () => {
+      activeSkill = "";
+      removeFilteredSection();
+      updateSkillButtonState();
+      updateActiveProjectTab();
+    });
+  };
+
+  const setSkillFilter = (skill) => {
+    activeSkill = normalizeLabel(activeSkill) === normalizeLabel(skill) ? "" : skill;
+    renderFilteredProjects(activeSkill);
+    updateSkillButtonState();
+
+    if (activeSkill) {
+      document.getElementById("filtered-project-section")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+
+    updateActiveProjectTab();
+  };
+
+  skillButtons.forEach((button) => {
+    button.addEventListener("click", () => setSkillFilter(button.dataset.skill || ""));
+  });
+  updateSkillButtonState();
+
+  const setActiveProjectTab = (hash) => {
+    projectTabs.forEach((tab) => {
+      const isActive = tab.hash === hash;
+      tab.classList.toggle("active-tab", isActive);
+
+      if (isActive) {
+        tab.setAttribute("aria-current", "true");
+      } else {
+        tab.removeAttribute("aria-current");
+      }
+    });
+  };
+
+  const isProjectPaneScrollable = () => {
+    if (!projectScrollArea) {
+      return false;
+    }
+
+    return (
+      window.getComputedStyle(projectScrollArea).overflowY !== "visible" &&
+      projectScrollArea.scrollHeight > projectScrollArea.clientHeight
+    );
+  };
+
+  const scrollToProjectSection = (hash, behavior = "smooth") => {
+    const target = hash ? document.querySelector(hash) : null;
+    const section = target?.closest(".project-section");
+    if (!projectScrollArea || !section) {
+      return false;
+    }
+
+    if (!isProjectPaneScrollable()) {
+      section.scrollIntoView({ behavior, block: "start" });
+      setActiveProjectTab(hash);
+      return true;
+    }
+
+    const scrollAreaTop = projectScrollArea.getBoundingClientRect().top;
+    const sectionTop = section.getBoundingClientRect().top;
+
+    projectScrollArea.scrollTo({
+      top: projectScrollArea.scrollTop + sectionTop - scrollAreaTop,
+      behavior
+    });
+    setActiveProjectTab(hash);
+
+    return true;
+  };
+
+  const updateActiveProjectTab = () => {
+    const projectSections = fixedProjectSections();
+    if (!projectScrollArea || !projectSections.length) {
+      return;
+    }
+
+    const paneScrolls = isProjectPaneScrollable();
+    const atFullScroll = paneScrolls
+      ? projectScrollArea.scrollTop >= projectScrollArea.scrollHeight - projectScrollArea.clientHeight - 2
+      : window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+
+    if (atFullScroll) {
+      const finalHeading = projectSections[projectSections.length - 1].querySelector("h2");
+
+      if (finalHeading) {
+        setActiveProjectTab(`#${finalHeading.id}`);
+      }
+
+      return;
+    }
+
+    const viewportRect = paneScrolls
+      ? projectScrollArea.getBoundingClientRect()
+      : { top: 0, height: window.innerHeight };
+    const viewportCenter = viewportRect.top + viewportRect.height / 2;
+    const activeSection = projectSections.reduce((current, section) => {
+      const currentRect = current.getBoundingClientRect();
+      const sectionRect = section.getBoundingClientRect();
+      const sectionContainsCenter =
+        sectionRect.top <= viewportCenter && sectionRect.bottom >= viewportCenter;
+      const currentContainsCenter =
+        currentRect.top <= viewportCenter && currentRect.bottom >= viewportCenter;
+
+      if (sectionContainsCenter && !currentContainsCenter) {
+        return section;
+      }
+
+      if (sectionContainsCenter === currentContainsCenter) {
+        const currentDistance = Math.abs(
+          currentRect.top + currentRect.height / 2 - viewportCenter
+        );
+        const sectionDistance = Math.abs(
+          sectionRect.top + sectionRect.height / 2 - viewportCenter
+        );
+
+        if (sectionDistance < currentDistance) {
+          return section;
+        }
+      }
+
+      return current;
+    }, projectSections[0]);
+    const heading = activeSection.querySelector("h2");
+
+    if (heading) {
+      setActiveProjectTab(`#${heading.id}`);
+    }
+  };
+
+  projectTabs.forEach((tab) => {
+    tab.addEventListener("click", (event) => {
+      if (scrollToProjectSection(tab.hash)) {
+        event.preventDefault();
+        window.history.replaceState(null, "", tab.hash);
+      }
+    });
+  });
+
+  if (projectScrollArea) {
+    let activeTabFrame = null;
+    const queueActiveTabUpdate = () => {
+      if (activeTabFrame) {
+        return;
+      }
+
+      activeTabFrame = requestAnimationFrame(() => {
+        updateActiveProjectTab();
+        activeTabFrame = null;
+      });
+    };
+
+    projectScrollArea.addEventListener("scroll", queueActiveTabUpdate);
+    window.addEventListener("scroll", queueActiveTabUpdate);
+    window.addEventListener("resize", queueActiveTabUpdate);
+  }
+
+  if (window.location.hash) {
+    requestAnimationFrame(() => scrollToProjectSection(window.location.hash, "auto"));
+  } else {
+    requestAnimationFrame(() => {
+      updateActiveProjectTab();
+    });
+  }
 
   const projectHeader = document.querySelector(".project-header");
   if (projectHeader) {
