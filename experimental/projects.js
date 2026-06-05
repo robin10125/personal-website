@@ -9,6 +9,7 @@ window.siteContent = {
   about: {
     details:
 	"I love nature, hard problems, machine learning, and staying active.  My goal is to make the world a better place.",
+  },
   skills: [
     "Machine Learning",
     "Computer Science",
