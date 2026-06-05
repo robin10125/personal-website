@@ -7,12 +7,8 @@ window.siteContent = {
       "University of Western Ontario - Bachelor of Science, Specialization in Computer Science - 2026." 
   },
   about: {
-    details: [
-      "I love nature, hard problems, machine learning, and staying active.  My goal is to make the world a better place.",
-	"Machine Learning combines what I love about nature and biology --magic of life-- with what I love about computer science --problem solving and openness.",
-	"You can usually find me creating experiments, swing dancing, reading, working out, and solving life's mysteries."		
-    ],
-  },
+    details:
+	"I love nature, hard problems, machine learning, and staying active.  My goal is to make the world a better place.",
   skills: [
     "Machine Learning",
     "Computer Science",
@@ -238,13 +234,6 @@ window.siteContent = {
         "Designed from scratch and assembled a robotic hand with 3d printer and servos, as well as skin electrodes to allow control by muscle contraction.  Served as an introduction project to computer science.",
       tags: ["Robotics", "3d printing", "CAD"],
       url: "projects/robot-hand.html"
-    },
-    {
-      title: "NN Microscope",
-      summary:
-        "An educational neural network visualizer for stepping through forward passes, backpropagation, gradients, and optimizer updates.",
-      tags: ["Javascript", "Machine Learning"],
-      url: "projects/nn-microscope.html"
     },
     {
       title: "Many School Projects",

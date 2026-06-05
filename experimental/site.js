@@ -35,17 +35,7 @@
 
   const aboutDetails = document.getElementById("about-details");
   if (aboutDetails && content.about?.details) {
-    const paragraphs = Array.isArray(content.about.details)
-      ? content.about.details
-      : [content.about.details];
-    aboutDetails.replaceWith(
-      ...paragraphs.map((text, i) => {
-        const p = document.createElement("p");
-        if (i === 0) p.id = "about-details";
-        p.textContent = text;
-        return p;
-      })
-    );
+    aboutDetails.textContent = content.about.details;
   }
 
   const skillsList = document.getElementById("skills-list");

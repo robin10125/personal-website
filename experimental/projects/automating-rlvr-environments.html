@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automating RLVR Environments | Robin Hylands</title>
+  <link rel="stylesheet" href="../styles.css">  <script src="../projects.js" defer></script>
+  <script src="../project-dates.js" defer></script>
+  <script src="../site.js" defer></script>
+
+</head>
+<body class="project-page">
+  <article class="project-article">
+    <nav class="project-nav">
+      <a class="back-link" href="../index.html">Back to projects</a>
+    </nav>
+
+    <header class="project-header">
+      <p class="eyebrow">Research Project</p>
+      <h1>Automating RLVR Environments</h1>
+      <p class="project-summary">Early research into automating the RLVR pipeline by training models to generate the environments used for training.</p>
+    </header>
+
+    <div class="project-content">
+      <p>In this project, I am beginning research into automating the RLVR pipeline by training models to generate the environments we train models in.</p>
+
+      	<p>
+	In this project, I am beginning research into automating the RLVR pipeline by training models to generate the environments we train models in.  
+	I was thinking of how my research interests could be more scale pilled, not just scalable.  
+	I was struck by a vision of a model generating billions of training environments in parallel, learning in them, and refining its ability to generate these environments from the results of these actions.  
+	It seems like a straightforward engine for recursive self improvement, but of course, since the objective is not well defined, it is hard to actually implement.  That is why I have started this project.
+	</p>
+	<p>
+	This is a bi level optimization problem, where the optimization performance of an inner process is itself optimized by an outer process.  
+	When I conceived of this project, I had to do a final report for my reinforcement learning class in the Winter 2026 term, so I figured I would get two birds with one stone by laying the initial groundwork of this project for my class’s final report.  
+	I essentially simplified the idea aggressively, and tried to get a signal of the outer process actually working.  You can read the results of this below.  
+	In summary I found a set of approaches and directions of focus to stabilize the bi level optimization problem, to allow for greater outer loop performance.
+	</p>
+	<p> Check out the report below. </p>
+	<object data="../assets/tmtm.pdf" type="application/pdf" width="100%" height="800px">
+		<p>Your browser can't display PDFs. <a href="../assets/tmtm.pdf">Download it</a>.</p>
+	</object>
+	<h3>Interested in the Code?</h3>
+	<a href = "https://github.com/robin10125/bi-level-optimization-experiment">Check out the code repo here!</a>
+	
+	<h2>Current Progress </h2>
+	<p>
+	After this, I decided to increase the complexity of the project substantially, by training an open source coding model to do the <a href = "https://arxiv.org/abs/2310.12931">Eureka</a> process of generating reward functions.
+	</p>
+	<h3>Quick Description of Eureka</h3>
+	<p>
+	<a href = "https://arxiv.org/abs/2310.12931">NVIDIA's Eureka (Ma et al., 2023)</a> is a system that uses a large language 
+	model to automatically write the reward functions for reinforcement learning
+	tasks, replacing what is normally a tedious and brittle hand-engineering 
+	step. Given a task description and the environment's source code, GPT-4 
+	proposes Python reward functions; each candidate is then evaluated by
+	actually training an RL policy against it inside NVIDIA's Isaac Gym
+	simulator, and summary statistics from that training run — per-component
+	reward traces, success rates, and so on — are fed back to the LLM as "reward
+	reflection" so it can iteratively mutate and improve its proposals over
+	successive generations. The result is an evolutionary search in
+	reward-function space, guided by an LLM that has read the environment, and
+	it produced reward functions competitive with or better than human-written
+	ones across 29 tasks, most famously training a Shadow Hand to perform rapid
+	pen-spinning.
+	</p>
+	<h2>Eureka as the Outer Loop</h2>
+	<h3> Summary </h3>
+	<p>
+	I am using Eureka as the inner process of a bi level optimization problem, and tuning the coding model that generates the reward code in the outer loop.  The goal is to tune the model to work better within the Eureka framework. 
+	</p>
+	<p>
+	I am fine tuning DeepSeek's DeepSeek-Coder-V2-Lite-Instruct, a 16B (2.4B active) MOE coding model, using QLora.  The training environment for the inner loop is the Gymnasium Ant5 environment, chosen for it's relative simplicity, while still being complex enough to benefit from the Eureka framework.  The current experiment I am running is running 20 RLVR iterations, 16 reward
+	candidates per iteration, and 4096 Ant worlds per candidate, so that I can get a basic signal of the effectiveness of my current implementation.  
+	</p>
+	<p>	
+	Compute constraints have been a pain point for me with this, so progress has been slower, but expect updates soon!  I am passionate about this project so this will not stop me.  I expect to have an update by the last week of May (2026), and the next iteration of this experiment ready and running by the end of May. 
+	</p>
+	<h3>Detailed Explanation</h3>
+
+	<p>
+	This project is an EUREKA-inspired RLVR experiment whose central goal is to
+	train a code model to generate better reinforcement-learning reward functions.
+	The experiment is not primarily about solving Ant locomotion once. Instead, Ant
+	is used as a compact, measurable environment for studying whether a coding model
+	can improve its reward-design behavior when downstream policy performance is
+	used as the verifiable training signal.
+	</p>
+
+	<p>
+	Here we see the bi level optimization pattern. The inner level trains
+	or searches for Ant behavior under a generated reward expression. The outer
+	level trains the reward-code generator from the measured downstream performance
+	of the generated reward.
+	</p>
+
+	<p>
+	The inner loop task is Gymnasium's `Ant-v5`. Ant is a used because it is complex enough for
+	reward design to matter, but the environment is still small enough for repeated
+	experimentation on my hardware. 
+	</p>
+
+	<p>
+	I use true environment return as the verified reward signal.
+	The generated reward expression is used only to train
+	or search for an Ant policy. It is not used as the final score for the language
+	model. After a candidate reward has induced a policy, that policy is evaluated
+	with the default `Ant-v5` reward. The default environment return becomes the
+	scalar reward assigned to the model completion that generated the candidate
+	reward expression. In other words, the performance of the agent on the generated reward is not used to train the model, rather only a separate (in this case default) reward is used.  
+	If we trained the code model on the performance on the generated reward functions, then the code model is incentivized to generate easy to hack reward functions. 
+	</p>
+
+	<p>
+	The training pipeline is iterative. In each iteration, the current generator model
+	samples a population of reward-code candidates. Each candidate is evaluated as described above.
+	The resulting records contain the prompt, completion, token IDs,
+	behavior-policy log probabilities, candidate metadata, and verified return.
+	Those records form the RLVR dataset for that iteration.
+	</p>
+
+	<p>
+	After collection, the project trains a LoRA adapter on the code model with a
+	GRPO objective. Candidate rewards sampled from the same policy and prompt
+	form a comparison group. Their verified returns are converted into relative
+	advantages, so the model is pushed toward completions that performed better than
+	other completions in the same group. The updated adapter is then used to sample
+	the next iteration of reward candidates.
+	</p>
+
+	<p>
+	The chosen model is DeepSeek-Coder-V2-Lite-Instruct`, a
+	Mixture-of-Experts coding model with 16B total parameters and approximately
+	2.4B active parameters per token. It is large enough to have meaningful code
+	generation ability while still being feasible to adapt with LoRA or QLoRA on a
+	single GPU. I use a Lora adaptor to reduce the memory footprint of model training.  
+	</p>
+	<p>
+	I considered using a dense model for even greater memory footprint efficiency, 
+	but the search I did indicated that DeepSeek-Coder-V2-Lite-Instruct is still optimal for my experiment.
+	</p>
+
+	<p>
+	I use MuJoCo Warp to speed up the Ant simulations by running large parallel batches on my GPU.  I am running 4096 Ant worlds per reward candidate, and 16 reward candidates per training iteration.  
+	</p>
+
+	<p>
+	I currently use a batched policy-search method rather than a
+	full PPO implementation inside MuJoCo Warp. For each reward candidate, it
+	samples or updates a population of simple policies across many Ant worlds,
+	ranks behavior using the generated shaped reward, then evaluates the best
+	resulting policy under true Ant return. I do this to reduce the computational cost of the inner loop.
+	I plan to upgrade this to a full PPO agent once initial testing is done.
+	</p>
+
+	<p>
+	I am currently still running the first iteration of this experiment, and I expect to analyze the results and update the experiment soon.  Stay tuned!
+	</p>
+
+	<h2>Link to experimental code repo</h2>
+	<a href = "https://github.com/robin10125/training-models-to-train-models">Training Models to Train Models</a>
+    </div>
+  </article>
+</body>
+</html>

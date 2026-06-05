@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ai Camera | Robin Hylands</title>
+  <link rel="stylesheet" href="../styles.css">  <script src="../projects.js" defer></script>
+  <script src="../project-dates.js" defer></script>
+  <script src="../site.js" defer></script>
+
+</head>
+<body class="project-page">
+  <article class="project-article">
+    <nav class="project-nav">
+      <a class="back-link" href="../index.html">Back to projects</a>
+    </nav>
+
+    <header class="project-header">
+      <p class="eyebrow">CS / Tech Project</p>
+      <h1>Generative Images Website</h1>
+      <p class="project-summary">Replace this page with a full technical project description.</p>
+    </header>
+
+    <div class="project-content">
+      <div class="template-note">
+	
+	<p>This is a learning project I did to learn every step of making a machine learning app. The goal was training machine learning models and serving them using cloud technologies for webapp access. The app focuses on image translation, a branch of computer vision. Each model translates source images into a target domain of impressionist style.</p>
+	This project uses 3 machine learning architectures, created and trained with Tensorflow in Python:
+	<ul>	
+	<li>Cycle-Gan with U-Net model architecture, and with Res-net architecture
+	<p>CycleGAN learns image-to-image translation between two unpaired domains, like landscape photographs and Van Gogh paintings, without needing matched examples. 
+	It does this by training two generators and two discriminators simultaneously: one generator maps photos to paintings, the other maps paintings back to photos. 
+	The key is the cycle-consistency loss, which penalizes the network if translating an image to the other domain and back again fails to reproduce the original. 
+	This loss prevents the generators from collapsing to arbitrary outputs and forces them to preserve the structural content of the input while only changing its style. 
+	The U-Net variant uses skip connections between encoder and decoder layers to retain fine spatial detail, while the Res-net variant uses residual blocks in the bottleneck to stack depth without losing gradient signal.</p>
+
+	<p>The big upside of CycleGAN is that unpaired training data is much easier to obtain than paired data.  Just a dataset of photos and a dataset of paintings is needed. 
+	The downsides are 1, as a GAN, training is unstable and extremely sensitive to the relative learning rates of generator and discriminator, mode collapse is a constant risk.
+	Secondly, the cycle consistency loss becomes a limitation when style transfer requires medium grain changes in the image.  
+	If any compositional information is lost because of large changes in texture and outlines, then the reconstruction doesn't have to create a plausible reconstruction but the exact reconstruction.  
+	This is a big limitation for more extensive style transfers, like anime style faces to real faces.</p>
+	
+	<li>Fast-Neural-Style-Transfer
+	<p>Fast Neural Style Transfer trains a feed-forward generator network to apply a single fixed style to any input image in one forward pass. 
+	Instead of optimizing the output image directly the way Gatys-style transfer does, FNST optimizes the weights of the generator using a perceptual loss computed from a pre-trained VGG network. 
+	The loss has two components: a content loss measuring how closely the generator's output matches the input image's high-level VGG features, 
+	and a style loss measuring how closely the Gram matrices of the output's lower-level VGG features match those of a reference style image. 
+	Once trained, the generator can stylize new images in milliseconds, which is what makes it fast compared to the per-image optimization approach of its predecessor.</p>
+
+	<p>FNST is dramatically faster at inference and noticeably more stable to train than a GAN, since there is no adversarial dynamic to balance.  
+	The loss is a stable gradient signal coming from a frozen pretrained network, rather than a moving target.  With no cycle consistency loss, lossy changes are more feasible as well. 
+	The trade-off is flexibility: each trained model is locked to exactly one style, so supporting multiple styles means training and serving multiple models. 
+	</p>
+
+	<li>Conditional Instance normalization GAN
+	<p>Conditional Instance Normalization GAN extends the fast style transfer idea so that a single network can produce many different styles. 
+	The trick is in the normalization layers: rather than learning fixed scale and shift parameters after instance normalization, the network learns a separate pair of scale and shift parameters for each style, 
+	and selects the right pair based on a style-id input. The shared convolutional weights end up encoding generic image-translation behavior, while the per-style affine parameters capture the stylistic differences. 
+	Conditioning the model this way lets a single forward pass produce any of N styles by swapping which affine parameters are applied, without any change to the underlying feature extraction.</p>
+
+	<p> 
+	Because the shared backbone is trained jointly across all styles, it generalizes better and produced visibly cleaner results than any of my single-style models in my experience, due to a much greater amount of training data being available (the model trains on many styles simultaneously), allowing style information that is shared across styles (which is a lot) to be more robustly learned.
+	</p>
+	</ul>
+	<p> I spent a long time trying to get GANs to work.  For an intro to machine learning project, in retrospect, GANS is like baptism by fire.  One of the largest takeaways for making GANS work was finding the optimal learning rates for the generator and discriminator networks, so one doesn't become stronger than the other.  It also became clear as I tried techniques that allowed for more data to be used, like CIN, which allows the model to generalize stylistic choices across many styles, that more data resulted in better results.  This is not revolutionary of course, but it is a real demonstration to me of the effectiveness of leveraging more data.</p>
+
+	<h2> Inference Serving </h2>
+	The models are served using Docker and the Tensorflow Extended Model Server Docker image. The Docker images were hosted on Google Cloud Services, and run on Google Cloud Run. I chose these technologies because they are the most customizable, efficient and cost effective approach I found available at the time, amongst the many options I tried.
+	<h2> Web App Details </h2>
+	The webapp server is a NodeJS Express server, also packaged into a Docker image and hosted on Google Cloud Run. Image preprocessing is done on the front end with Tensorflow JS, and then image data is posted to the server. After machine learning inference, the image data postprocessing also happens on the front end.
+	
+	<h2>Want to see the code?</h2>
+	<a href="https://github.com/robin10125/Ai_Camera">Check out the repo!</a>
+	<h2> Datasets used for model training: </h2>
+	https://www.kaggle.com/ipythonx/van-gogh-paintings
+	https://www.kaggle.com/arnaud58/landscape-pictures
+	Coco 2014 train dataset
+	
+	<h2> Technology Stack </h2>
+	Python, Javascript, NodeJs, Express, Tensorflow + TFJS + TFX, Docker, Google Cloud Run, HTML, CSS
+	
+	<h2> TODO </h2>
+	<p>Verification of image data before posting to model server </p>
+	<p>Train Res-net models using mixed precision to surmount speed limitations </p>
+	<p>Clean up webapp HTML page; make it look better and more stylistic </p>
+	
+	<h2> References to helpful tutorials for constructing models </h2>
+	<p>Tarun Bisht's Tutorial on Fast Style Transfer - Help with loss functions and data pipelining for Fast Style Transfer </p>
+	<p>Jason Brownlee's Cycle-Gan Tutorial - Used for Res-Net model programming in Tensorflow </p>
+	
+	<h2> References to Academic Papers referenced for training </h2>
+	<p>Hajar Emami, Majid Moradi Aliabadi, Ming Dong and Ratna Babu Chinnam. SPA-GAN: Spatial Attention GAN for Image-to-Image Translation https://arxiv.org/abs/1908.06616 </p>
+	<p>Jun-Yan Zhu, Taesung Park, Phillip Isola, Alexei A. Efros. Unpaired Image-to-Image Translation using Cycle-Consistent Adversarial Networks https://arxiv.org/abs/1703.10593 </p>
+	<p>Justin Johnson, Alexandre Alahi, Li Fei-Fei. Perceptual Losses for Real-Time Style Transfer and Super-Resolution. https://arxiv.org/abs/1603.08155 </p>
+	<p>Vincent Dumoulin, Jonathon Shlens, Manjunath Kudlur. A Learned Representation For Artistic Style. https://arxiv.org/abs/1610.07629 </p>
+      </div>
+    </div>
+  </article>
+</body>
+</html>
