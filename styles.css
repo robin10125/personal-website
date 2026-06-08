@@ -65,6 +65,86 @@ a {
   white-space: nowrap;
 }
 
+/* Name introduction animation (see name-animation.js) */
+.life-name-title {
+  position: relative;
+  display: flex;
+  margin-right: auto;
+  margin-left: auto;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.life-name-fallback {
+  color: var(--text);
+  font-size: clamp(2rem, 4vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.12;
+  white-space: nowrap;
+}
+
+.life-name-title.anim-ready {
+  font-size: clamp(2rem, 4vw, 3.6rem);
+}
+
+.life-name-title.anim-ready .life-name-fallback {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.name-anim {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.name-anim .letter {
+  display: inline-block;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  white-space: pre;
+}
+
+.name-anim .space {
+  display: inline-block;
+  width: 0.32em;
+}
+
+.name-bars {
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.name-transfer {
+  overflow: visible;
+}
+
+.transfer-bar {
+  position: absolute;
+  border-radius: 1px;
+  will-change: transform;
+}
+
 .title-row {
   display: block;
 }
