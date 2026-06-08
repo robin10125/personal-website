@@ -1,5 +1,5 @@
 window.projectLastUpdated = {
-  "projects/automating-rlvr-environments.html": "2026-05-20",
+  "projects/automating-rlvr-environments.html": "2026-06-08",
   "projects/hyperconnections-mtp.html": "2026-05-20",
   "projects/character-word-features.html": "2026-05-20",
   "projects/predictive-coding-objectives.html": "2026-05-20",

@@ -107,7 +107,7 @@ window.siteContent = {
     {
       title: "Automating RLVR Environments",
       summary:
-        "Early research into automating the RLVR pipeline by training models to generate the environments used for training.",
+        "Research project into recursive super intelligence by treating models improving themselves as a skill, and optimizing this ability explicitly.  In other words, training models to train models.  So far I have tested and improved a small framework for this kind of bi level optimization problem with maze games and RL agents.  I am now experimenting with training models to do the EUREKA framework more efficevly by treating downstream performance within the EUREKA framework as a learning signal for the code models generating shaped rewards.",
       tags: ["RLVR", "Environment generation", "AutoML"],
       url: "projects/automating-rlvr-environments.html",
       highlight: true,
@@ -117,7 +117,7 @@ window.siteContent = {
     {
       title: "Hyperconnections and Multi-Token Prediction",
       summary:
-        "An experiment plan exploring whether hyperconnections can help models specialize under multi-token prediction objectives. The core comparison is between hyperconnection and residual models under next-token and multi-token training setups.",
+        "An experiment plan exploring whether hyperconnections can help models specialize under multi-token prediction objectives. The core comparison is between hyperconnection and residual models under next-token and multi-token training setups.  I have confirmed that these techniques simply add their efficiency gains together (the null hypothesis), and I have now pvioted this project to focus in improving the efficiency of these algorithms so that they can match the reported performance reported in the literature.  To this end I am developing my CUDA/XLA and distributed training skills.",
       tags: ["Architectures", "Objective Functions"],
       url: "projects/hyperconnections-mtp.html",
       highlight: true,
