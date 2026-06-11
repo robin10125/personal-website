@@ -150,12 +150,13 @@ window.siteContent = {
   ],
 
   selfStudyProjects: [
-    {
-      title: "Random Study Topics",
+    
+     {
+      title: "ML Theory",
       summary:
-        "A collection of assorted topics I have been looking into.",
-      tags: ["Machine Learning"],
-      url: "projects/random-study-topics.html"
+        "I aspire to have solid theoretical grounding in ML theory beyond what typical undergrad courses provide. I will post updates on ML theory that I take serious steps to learn.",
+      tags: ["Machine Learning", "Mathematics"],
+      url: "projects/ml-theory.html"
     },
     {
       title: "Distributed Model Training",
@@ -179,11 +180,11 @@ window.siteContent = {
       url: "projects/jax.html"
     },
     {
-      title: "ML Theory",
+      title: "Random Study Topics",
       summary:
-        "I aspire to have solid theoretical grounding in ML theory beyond what typical undergrad courses provide. I will post updates on ML theory that I take serious steps to learn.",
-      tags: ["Machine Learning", "Mathematics"],
-      url: "projects/ml-theory.html"
+        "A collection of assorted topics I have been looking into.",
+      tags: ["Machine Learning"],
+      url: "projects/random-study-topics.html"
     },
     {
       title: "Papers I Am Reading and a Suggested Reading List",
@@ -191,7 +192,7 @@ window.siteContent = {
         "A collection of papers I have read and am reading, to the point of decent recall and understanding starting June 11 2026, and a suggested reading list of papers I have read before that I think are worth understanding.",
       tags: ["Machine Learning"],
       url: "projects/papers-i-am-reading.html"
-    }
+    },
   ],
 
   techProjects: [

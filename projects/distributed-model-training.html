@@ -25,22 +25,26 @@
       <section class="study-topic">
         <div class="study-topic-header">
           <h2>Chapter 1: A Brief Intro to Roofline Analysis</h2>
-          <time class="study-topic-date" datetime="2026-06-11">June 11, 2026</time>
+          <time class="study-topic-date" datetime="2026-06-11">May 22, 2026</time>
         </div>
+	<p>This chapter covers the analysis of math computation time, communications time, and how to determine if a process will be math bound or communications bound.  We generally aim to be math bound, saturating the compute capacity of the TPUs.
       </section>
 
       <section class="study-topic">
         <div class="study-topic-header">
           <h2>Chapter 2: How to Think About TPUs</h2>
-          <time class="study-topic-date" datetime="2026-06-11">June 11, 2026</time>
+          <time class="study-topic-date" datetime="2026-06-11">May 29, 2026</time>
         </div>
+	<p>This chapter covers how TPUs work, including systolic arrays, and how TPUS are connected to HBW memory, host chips, and to each other, through ICI links.  It sets you up to be able to reason about the performance of an arbitrary matmul on a particular setup of TPUs.</p>
       </section>
 
       <section class="study-topic">
         <div class="study-topic-header">
           <h2>Chapter 3: Sharded Matrices and How to Multiply Them</h2>
-          <time class="study-topic-date" datetime="2026-06-11">June 11, 2026</time>
+          <time class="study-topic-date" datetime="2026-06-11">June 5, 2026</time>
         </div>
+	<p>The most substanial topic in part 1.  This chapter covers operations on sharded matrices, covering AllGather, ReduceScatter, AllReduce, and ALLtoAll, including their communication costs.  
+	This chapter leaves you able to reason about how to shard matrices for an operation on a arbitrary slice of TPUs to maximize performance efficiency. </p>
       </section>
 
       <section class="study-topic">
@@ -48,6 +52,7 @@
           <h2>Chapter 4: All the Transformer Math You Need to Know</h2>
           <time class="study-topic-date" datetime="2026-06-11">June 11, 2026</time>
         </div>
+	This chapter covers the FLOPs requried to do forward and backward passes on a transformer network. 
       </section>
 
       <section class="study-topic">
