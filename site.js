@@ -162,6 +162,7 @@
 
   renderCards("research-projects", content.researchProjects || []);
   const singleColumnQuery = window.matchMedia("(max-width: 900px)");
+  renderCards("self-study-projects", content.selfStudyProjects || []);
   renderCards("tech-projects", content.techProjects || []);
   renderCards("other-projects", content.otherProjects || []);
   renderCards("work-projects", content.workProjects || []);
@@ -178,6 +179,7 @@
 
   const groupedProjects = [
     { key: "research", projects: content.researchProjects || [] },
+    { key: "selfStudy", projects: content.selfStudyProjects || [] },
     { key: "tech", projects: content.techProjects || [] },
     { key: "other", projects: content.otherProjects || [] },
     { key: "work", projects: content.workProjects || [] }

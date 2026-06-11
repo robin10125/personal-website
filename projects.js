@@ -149,6 +149,51 @@ window.siteContent = {
     },
   ],
 
+  selfStudyProjects: [
+    {
+      title: "Random Study Topics",
+      summary:
+        "A collection of assorted topics I have been looking into.",
+      tags: ["Machine Learning"],
+      url: "projects/random-study-topics.html"
+    },
+    {
+      title: "Distributed Model Training",
+      summary:
+        "I am very rigorously going through the \"How to Scale Your Model\" textbook and problem sets to learn distributed computing techniques for scaling model training to multiple devices.",
+      tags: ["Distributed Training", "Machine Learning", "Machine Learning Engineering"],
+      url: "projects/distributed-model-training.html"
+    },
+    {
+      title: "GPU Programming",
+      summary:
+        "I am training to become a competent kernel engineer for machine learning applications.",
+      tags: ["GPU Programming", "Machine Learning Engineering"],
+      url: "projects/gpu-programming.html"
+    },
+    {
+      title: "JAX",
+      summary:
+        "I am practicing to become fluent in JAX.",
+      tags: ["JAX", "Machine Learning"],
+      url: "projects/jax.html"
+    },
+    {
+      title: "ML Theory",
+      summary:
+        "I aspire to have solid theoretical grounding in ML theory beyond what typical undergrad courses provide. I will post updates on ML theory that I take serious steps to learn.",
+      tags: ["Machine Learning", "Mathematics"],
+      url: "projects/ml-theory.html"
+    },
+    {
+      title: "Papers I Am Reading and a Suggested Reading List",
+      summary:
+        "A collection of papers I have read and am reading, to the point of decent recall and understanding starting June 11 2026, and a suggested reading list of papers I have read before that I think are worth understanding.",
+      tags: ["Machine Learning"],
+      url: "projects/papers-i-am-reading.html"
+    }
+  ],
+
   techProjects: [
     {
       title: "Full Stack Generative Images Website",

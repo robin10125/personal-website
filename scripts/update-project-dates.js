@@ -35,6 +35,7 @@ const getProjects = () => {
   const content = sandbox.window.siteContent || {};
   return [
     ...(content.researchProjects || []),
+    ...(content.selfStudyProjects || []),
     ...(content.techProjects || []),
     ...(content.workProjects || []),
     ...(content.otherProjects || [])

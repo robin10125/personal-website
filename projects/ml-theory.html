@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ML Theory | Robin Hylands</title>
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../projects.js" defer></script>
+  <script src="../project-dates.js" defer></script>
+  <script src="../site.js" defer></script>
+</head>
+<body class="project-page">
+  <article class="project-article">
+    <nav class="project-nav">
+      <a class="back-link" href="../index.html">Back to projects</a>
+    </nav>
+
+    <header class="project-header">
+      <p class="eyebrow">Self Study</p>
+      <h1>ML Theory</h1>
+      <p class="project-summary">I aspire to have solid theoretical grounding in ML theory beyond what typical undergrad courses provide. I will post updates on ML theory that I take serious steps to learn.</p>
+    </header>
+
+    <div class="project-content">
+      <section class="study-topic">
+        <div class="study-topic-header">
+          <h2>KL Divergence</h2>
+          <time class="study-topic-date" datetime="2026-06-11">June 11, 2026</time>
+	</div>
+	<p>I refreshed my understanding of KL divergence, focusing on forward KL, reverse KL and their applications and related concepts.  In summary, KL divergence measures the difference between an estimated probability distribution and a real probability distribution.  An example may be a model's predicted likelyhood of observing data x and the ground truth likelyhood.</p>
+	<p>The formula for forward KL divergence is: </p>
+	<span>
+	  D<sub>KL</sub>(P || Q) =
+	  𝔼<sub>x∼P</sub>
+	  [log(P(x) / Q(x))]
+	  =
+	  ∑<sub>x</sub> P(x) log(P(x) / Q(x))
+	</span>
+	<p>We can see that forward KL divergence penalizes the model (Q) for predicting low values of Q where the true value (P) is not low.  At the extreme, if Q(x)=0, then if P(x)=/=0, then the KL divergence will explode to infinity.  
+	Alternatively, if Q(x) assigns high probablilty where P(x) is very low or zero, there is little to no penalty (low KL divergence), since each term is scaled by P(x).  
+	These two dynamics bias the model Q to model a wide distribution that encompasses all the values P could take, and often take the same mean value as P.  
+	</p>
+	<p>The formula for reverse KL divergence is </p>
+        
+	<span>
+	  D<sub>KL</sub>(Q || P) =
+	  𝔼<sub>x∼Q</sub>
+	  [log(Q(x) / P(x))]
+	  =
+	  ∑<sub>x</sub> Q(x) log(Q(x) / P(x))
+	</span>
+	<p>
+	We see that the reverse KL divergence scales each term by the value of Q(x), so that reverse KL divergence is not affected much by differences in distributions where Q(x) is small.  
+	Therefore reverse KL divergence is only really concerned with the accuracy of model predictions, and not whether these accurately model all of P.  We see the value of reverse KL divergence explode if a large value of Q(x) is predicted where P(x) is small.  
+	When optimizing using this, false negatives are not penalized, however false positives are penalized heavily.  This can produce a more narrow band of behaviour centering around the modal values of P.  
+	</p>
+	<h3>Some more connections to ML</h3>
+	<p>We can see that optimizing cross entropy is very similar to forward KL divergence.  When training a model, the real distribution P doesn't change, only Q, and therefore optimzing KL divergence is equivalent to optimizing the -\sum_x{-P(x)log(Q(x)} term, which is exactly the cross entropy from P to Q.<p>
+	<p>We can also get the ELBO from reverse KL divergence, which comes from optimizing the reverse KL divergence between an approximate posterier q(z|x) and a true posterior p(z|x).  
+	We take our reverse KL divergence formula with the posterior P, and we get the equation D_{KL}(q(z|x) || p(z | x)) = log(p(x)) - E_{q}[log(p(x,z)-log(q(z|x))].  The second term is the (negative) ELBO.  
+	We can rearrange this to get log(p(x) = D_{KL}(...) + ELBO.  Since KL divergence is always non negative, we get the inequality log(p(x)) >= ELBO, meaning the ELBO is a lower bound on the log evidence of p(x). 
+	More details on the ELBO deserve its own post.
+	</p>
+	
+	<h3>Making a program to help me study</h3>
+	<p>To help me study, I used AI to generate a website that functions as an interactive educational textbook with problem sets.  You can try it for yourself.  Just download the html and open it in your browser!</p>
+	<a href="https://github.com/robin10125/ml-study/blob/master/kl-divergence.html">kl-divergence study program</a>
+
+      </section>
+    </div>
+  </article>
+</body>
+</html>
