@@ -70,6 +70,7 @@ window.siteContent = {
   },
   skillProjectMap: {
     Python: [
+      "projects/accelerating-robot-learning-with-llms.html",
       "projects/automating-rlvr-environments.html",
       "projects/hyperconnections-mtp.html",
       "projects/character-word-features.html",
