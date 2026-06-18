@@ -10,6 +10,7 @@ deployment:
     - /bin/cp project-dates.js "$DEPLOYPATH"
     - /bin/cp .htaccess "$DEPLOYPATH"
     - /bin/cp -R assets "$DEPLOYPATH"
+    - /bin/rm -rf "$DEPLOYPATH/projects"
     - /bin/cp -R projects "$DEPLOYPATH"
     - /bin/rm -rf "$DEPLOYPATH/old"
     - /bin/cp -R old "$DEPLOYPATH"

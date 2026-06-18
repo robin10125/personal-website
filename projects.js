@@ -26,6 +26,8 @@ window.siteContent = {
   ],
   skillTagMap: {
     "RLVR": ["Machine Learning"],
+    "RL": ["Machine Learning"],
+    "Agent Harness": ["Machine Learning"],
     "Environment generation": ["Machine Learning"],
     "AutoML": ["Machine Learning"],
     "Architectures": ["Machine Learning"],
@@ -104,6 +106,18 @@ window.siteContent = {
   },
 
   researchProjects: [
+    
+     {
+      title: "Accelerating Robot Policy Learning",
+      summary:
+        "A gamut of experiments exploring the use of intelligent reasoning models to accelerate robot policy training.  The core intuition is distilling the intelligence of reasoning LLMs into robot policy models.  I approach this in several different ways, including using LLMs generated policies as a demo, biasing exploration with LLM determined priors, dense reward shaping, agent harnesses combining LLMs with policy networks, residual policies, and more techniques.  The goal is to better enable read world robot policy training through sample efficient learning.  Click to read the active technical blog.",
+      tags: ["RL", "Robotics", "Agent Harness"],
+      url: "projects/accelerating-robot-learning-with-llms.html",
+      highlight: true,
+      highlightColor: "#b45309",
+      featured: true
+    },
+
     {
       title: "Automating RLVR Environments",
       summary:
@@ -152,7 +166,7 @@ window.siteContent = {
   selfStudyProjects: [
     
      {
-      title: "ML Theory",
+      title: "ML Theory Blog",
       summary:
         "I aspire to have solid theoretical grounding in ML theory beyond what typical undergrad courses provide. I will post updates on ML theory that I take serious steps to learn.",
       tags: ["Machine Learning", "Mathematics"],

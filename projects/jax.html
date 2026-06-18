@@ -24,11 +24,28 @@
     <div class="project-content">
       <section class="study-topic">
         <div class="study-topic-header">
-          <h2>TBC...</h2>
-          <time class="study-topic-date" datetime="2026-06-11">June 11, 2026</time>
+          <h2>Fundamentals of JAX Part 1</h2>
+          <time class="study-topic-date" datetime="2026-06-18">June 18, 2026</time>
         </div>
+	<p>JAX is all about functions, rather than objects holding state.  It's syntax and form mirrors that of numpy, and uses composable function transformations.  In JAX, arrays are immutable.  Transformations create new ararys.  During compilation, if the compiler determines that old values of an array are not used, copying is turned into in place writing.  Functions in JAX are "pure", meaning that everything that is not constant must enter the funciton as an argument, and everything a function produces must leave as a return value.  Randomess is also different in JAX than PyTorch.  When gerneating random numbers in JAX, first you generate a key, then pass the key into the random generator.  The generated values are deterministic, so every generation from the same key is the same.  You can split keys to get multiple keys if you need multiple random values.</p>
+      </section>
+      <section class="study-topic">
+        <div class="study-topic-header">
+          <h2>Fundamentals of JAX Part 2: Gradients</h2>
+          <time class="study-topic-date" datetime="2026-06-18">June 18, 2026</time>
+        </div>
+	<p>TBC</p>
+      </section>
+      <section class="study-topic">
+        <div class="study-topic-header">
+          <h2>Study Webpage</h2>
+          <time class="study-topic-date" datetime="2026-06-18">June 18, 2026</time>
+        </div>
+	<p>I had Claude make a website to help me study.  You can check it out! </p>
+	<a href="https://github.com/robin10125/ml-study/tree/master/jax-transformer-course">Jax Course Website</a>
       </section>
     </div>
+   
   </article>
 </body>
 </html>

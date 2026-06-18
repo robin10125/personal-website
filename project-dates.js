@@ -1,4 +1,5 @@
 window.projectLastUpdated = {
+  "projects/accelerating-robot-learning-with-llms.html": "2026-06-18",
   "projects/automating-rlvr-environments.html": "2026-06-08",
   "projects/hyperconnections-mtp.html": "2026-05-20",
   "projects/character-word-features.html": "2026-05-20",
