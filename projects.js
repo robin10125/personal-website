@@ -1,5 +1,5 @@
 window.siteContent = {
-  // Optional per project: add highlight: true and highlightColor: "#2f6358"
+  // Optional per project: add highlight: true and highlightColor: "#121212"
   // to give a card a custom colored border. Add featured: true to make a
   // card visually larger in the homepage section layout.
   education: {
@@ -107,7 +107,16 @@ window.siteContent = {
   },
 
   researchProjects: [
-    
+    {
+      title: "Delta J Space Research",
+      summary:
+        "A placeholder for ongoing Delta J space research notes and experiments.",
+      tags: ["Machine Learning"],
+      url: "projects/delta-j-space-research.html",
+      highlight: true,
+      highlightColor: "#b45309",
+      featured: true
+    },
      {
       title: "Accelerating Robot Policy Learning",
       summary:
@@ -134,10 +143,14 @@ window.siteContent = {
       summary:
         "An experiment plan exploring whether hyperconnections can help models specialize under multi-token prediction objectives. The core comparison is between hyperconnection and residual models under next-token and multi-token training setups.  I have confirmed that these techniques simply add their efficiency gains together (the null hypothesis), and I have now pvioted this project to focus in improving the efficiency of these algorithms so that they can match the reported performance reported in the literature.  To this end I am developing my CUDA/XLA and distributed training skills.",
       tags: ["Architectures", "Objective Functions"],
-      url: "projects/hyperconnections-mtp.html",
-      highlight: true,
-      highlightColor: "#b45309",
-      featured: true
+      url: "projects/hyperconnections-mtp.html"
+    },
+    {
+      title: "Tokenizer Research",
+      summary:
+        "A placeholder for ongoing tokenizer research notes and experiments.",
+      tags: ["Machine Learning"],
+      url: "projects/tokenizer-research.html"
     },
     {
       title: "Byte Level Models and Word Level Features",

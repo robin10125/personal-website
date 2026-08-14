@@ -95,7 +95,7 @@
       : "";
     const isHighlighted = project.highlight === true || project.highlight === "true";
     const isFeatured = project.featured === true || project.featured === "true";
-    const highlightColor = project.highlightColor || project.highlightColour || "#2f6358";
+    const highlightColor = project.highlightColor || project.highlightColour || "#121212";
     const cardClass = [
       "project-card",
       project.image ? "" : "text-only-card",

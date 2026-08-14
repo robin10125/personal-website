@@ -1,14 +1,13 @@
 :root {
   color-scheme: light;
-  --background: #f7f6f2;
+  --background: #fffdfd;
   --surface: #ffffff;
-  --surface-muted: #efeee8;
-  --text: #161616;
-  --muted: #64625c;
-  --line: #d8d5cc;
-  --accent: #2f6358;
-  --accent-soft: #e7f0eb;
-  --shadow: 0 12px 28px rgba(31, 31, 27, 0.08);
+  --surface-muted: #fff8f7;
+  --text: #121212;
+  --muted: #625958;
+  --line: #d9cbca;
+  --accent: #121212;
+  --accent-soft: #fceeed;
 }
 
 * {
@@ -351,7 +350,7 @@ a {
 
 .project-tabs a.active-tab,
 .project-tabs a[aria-current="true"] {
-  border-bottom-color: rgba(47, 99, 88, 0.45);
+  border-bottom-color: rgba(18, 18, 18, 0.45);
   color: var(--text);
 }
 
@@ -440,17 +439,15 @@ a {
   min-height: 430px;
   height: 430px;
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: 1px solid #2a2727;
   border-radius: 8px;
   background: var(--surface);
-  box-shadow: var(--shadow);
   text-decoration: none;
-  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+  transition: transform 160ms ease, border-color 160ms ease;
 }
 
 .highlighted-card {
-  border-color: var(--line);
-  box-shadow: var(--shadow);
+  border-color: #2a2727;
 }
 
 .featured-card {
@@ -539,15 +536,13 @@ a {
   height: auto;
   min-height: 430px;
   transform: translateY(-2px);
-  border-color: rgba(47, 99, 88, 0.45);
-  box-shadow: 0 16px 34px rgba(31, 31, 27, 0.12);
+  border-color: #121212;
   outline: none;
 }
 
 .highlighted-card:hover,
 .highlighted-card:focus-visible {
-  border-color: rgba(47, 99, 88, 0.45);
-  box-shadow: 0 16px 34px rgba(31, 31, 27, 0.12);
+  border-color: #121212;
 }
 
 .compact-grid .project-card:hover,
@@ -600,7 +595,7 @@ a {
 
 .card-media-empty {
   background:
-    linear-gradient(135deg, rgba(47, 99, 88, 0.11), rgba(47, 99, 88, 0) 62%),
+    linear-gradient(135deg, rgba(167, 61, 61, 0.12), rgba(167, 61, 61, 0) 62%),
     var(--surface-muted);
 }
 
@@ -746,7 +741,7 @@ a {
 }
 
 .project-page {
-  background: #fbfaf7;
+  background: var(--background);
 }
 
 .project-nav {
@@ -870,7 +865,7 @@ a {
   padding: 12px 18px;
   border-left: 3px solid var(--accent);
   background: var(--accent-soft);
-  color: #243b35;
+  color: var(--text);
 }
 
 .project-content table {
@@ -909,7 +904,7 @@ a {
 .project-content code {
   overflow-wrap: break-word;
   border-radius: 4px;
-  background: rgba(47, 99, 88, 0.08);
+  background: rgba(167, 61, 61, 0.09);
   font-size: 0.92em;
 }
 

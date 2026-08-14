@@ -18,13 +18,13 @@
 
   var NAME = "Robin Hylands";
   var ROWS = 6;
-  var TEXT = [22, 22, 22]; // #161616 final font colour
+  var TEXT = [18, 18, 18]; // matches --text (#121212)
 
   var reduce =
     window.matchMedia &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // --- palette: 6 distinct rainbow colours --------------------------------
+  // --- palette: six distinct colours for the name animation only -----------
   function hsl2rgb(h, s, l) {
     h /= 360;
     function hue(p, q, t) {
