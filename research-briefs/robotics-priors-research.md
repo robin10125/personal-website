@@ -4,6 +4,8 @@
 
 This research asks how an LLM-authored behavioral program should be connected to a PPO-trained robot policy. I explored two intentionally different points on an authority spectrum:
 
+-Two promising strategies emerge:
+
 - **Critic features:** the program supplies privileged, structured features to the value function only. The actor and reward remain unchanged, so the program cannot directly alter the optimal policy.
 - **Motor tape:** the program produces a reset-anchored, open-loop trajectory that contributes directly to action, while learned residual, timing, and modulation heads correct it.
 
@@ -48,3 +50,10 @@ Motor tapes show that the right question is not “is the generated plan good?�
 - `policy_bias_lab/experimental/motor-tape/DESIGN.md` — tape specification, compiler, and correction architecture.
 - `policy_bias_lab/experimental/motor-tape/` — tape generation, PPO integration, robustness, and handoff studies.
 - `policy_bias_lab/experimental/alternative-methods/` — critic-feature implementation and mechanism checks.
+
+
+Aug 16 - testing bounds of lower level policy, found that a fixed bound works best, and needs to be small to work well.
+Aug 17 - testing different bounds - learned bound, bound based off of robot and task geometry, and bound based off of motor tape error.  Error based bound appears to work best. Moving on to testing in more diverse environments.
+Aug-18/19 - expanding testing to different objects, and testing single lower policy over all of them.  Rounded objects have low success rate.  Shared lower policy works.  Need to test if it works better though.  Hierarchical authoring works better than per task authoring.
+Aug 19 - Found that the reward objective was making the policy stray from an effective tape - this also raises an intersting question - can we use LLM policies to check the effectiveness of shaped rewards.  Shaped rewards that pull the behaviour off the LLM policy in stages that are not failing are probably malformed.  
+Aug 20 - Testing new shaped rewards that reward terminal stages more than beginning stages.  

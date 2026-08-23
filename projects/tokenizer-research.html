@@ -17,15 +17,54 @@
 
     <header class="project-header">
       <p class="eyebrow">Research Project</p>
-      <h1>Tokenizer Research</h1>
-      <p class="project-summary">A placeholder for ongoing tokenizer research notes and experiments.</p>
+      <h1>Tokenizer Frequency Floor Research</h1>
+      <p class="project-summary">A stub on the tokenizer research I've been doing.</p>
     </header>
 
-    <div class="project-content">
-      <div class="template-note">
-        <p>This page is reserved for research questions, methods, experiments, and results as the project develops.</p>
-      </div>
-    </div>
+  <div class="project-content">
+    	<p>
+	I was inspired to work on tokenizers after thinking deeply about predictive coding, human learning, and recurrant/looped transformers, and I realized that tokenization might be able to achieve the goals of all of these disparate subfields in a particulirly powerful way.
+	</p>
+	<p>
+	First, I realized that predictive coding objectives - a hierarchy of abstract concepts describing the environment, as well as the human experience of predicting the content of something rather than the particular configuration of lower level data (like so and so is speaking about this topic, versus so and so will say this ecact sequence of words),
+	can be approximated with tokenization by simply assigning abstract concepts their own tokens dynamically.  Next, looped/recurrant transformers might be able to be approximated by dynamic tokenization by assigning useful recurrant states as their own token.
+	If it is the case that certain recurrant states are more useful than others, and that a line of abstract, latent thinking is done to generate a final coherent state, then this technique might be a great benefit, because it shortcuts the need to recompute each powerful latent state, instead allowing them to be retreived from the tokenizer.  
+	</p>
+	<p>
+	In general I find the idea of dyanmic tokenization really interesting, and I wonder if an intelligent LLM may be better at chosing it's own tokens better than a simple algorithm, or we, can.  I also find the prospect of LLMs controlling their own machinery, like tokenziers, really intersting, because it produces a fertile ground for meta cognitive abilities to emerge,
+	since a model must understand it's machinery in order to manipulate it well.  The philosophical impliations of artificial meta cognition is also very interesting to me.  This tangentally leads into another direction of research I am interested in, which is specifically trying to induce meta cognitive capabilites by giving models control over their machinery (like tokenizer, segmenetaion, temperature, steering vectors, expert selection, etc),
+	and forcing it to become proficient as using this machinery as a tool.
+	</p>
+	<p>
+	My research on this topic is still very early stage.  I have focused on making a basic groundwork of dynamic token learning dynamics - seeing how well models can learn new tokens.  I have found that models need to see very few instances of a token (less than 100) for the embedding direction to covnerge upon a direciton, 
+	and the initialization of the token matters very little in this regard, with simple averaging performing best after training (while initialization does matter for untrained tokens).  
+	I have also found that that new token directions converge on a direction under both RL and SFT and RL training is sufficient to train a model to understand new tokens.  I also have found that tokens converge faster in more well trained models than freshly initialized models.
+	</p>
+	<p>
+	I have done several experiments on segmentation strategies, trying to control information content of each token and doing learned segmentaion strategies.  I have found that these have interesting dynamics (that I'll report on when I return to this research), but generally slightly underperform or only match the deterministic and simple most frequent pairing segmentation, but seemed to outperform other segmentation stragegies like HNET.
+	</p>
+	<p>
+	I did some preliminary testing on the tokenizer scaling laws, and replicated the result that larger models benefit from larger vocabularies, and the optimal vocabularily size does scale with model parameters and training tokens.  
+	</p>
+	<p>
+	I looked at the token distribution shift between pre training and post training, and (unsuprisingly) found that there was a large shift in token distributions between pre training and post training.  This prompts the next line of inquiry, which is whether BPE tokenization corpuses should be constructed to reflect the token distribution of post trained models rather than just high quality and most relevant pre training data.
+	</p>
+	<p>
+	I also tested the effect of tokenization on long context retrieval, and got preliminary results indicating that more bytes per token results in better retrieval.  This means that the benefit of fewer tokens may outweight the diffuculty of retrieving from a more complex, information dense set of tokens.
+	</p>
+	<h3> Next Steps </h3>
+	<p>
+	The next major step in this line of research is to study the dynamics of <strong>predicting</strong> dynamic tokens, without destabilizing the network.  Learning new embeddings is comparatively trivial, but learning to predict new tokens can destabilize the network and result in catastrophic forgetting.
+	One idea is to have a fixed bank of dynamic tokens, where underused dynamic tokens can be repurposed , preventing new rows added to the unembedding matrix.  	
+	</p>
+
+    <section class="template-note">
+      <p><strong>Code attached:</strong></p>
+      <ul>
+        <li><a href="https://github.com/robin10125/research-playground/tree/main/tokenizer-frequency-floor">Tokenizer Frequency Floor</a></li>
+      </ul>
+    </section>
+  </div>
   </article>
 </body>
 </html>

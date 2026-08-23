@@ -16,7 +16,7 @@
     </nav>
 
     <header class="project-header">
-      <p class="eyebrow">CS / Tech Project</p>
+      <p class="eyebrow">Research Project</p>
       <h1>Accelerating Robot Policy Training</h1>
       <p class="project-summary">A gamut of experiments exploring the use of intelligent reasoning models to accelerate robot policy training.  
 	The core intuition is distilling the intelligence of reasoning LLMs into robot policy models.  
@@ -28,11 +28,59 @@
     <div class="project-content">
       <div class="template-note">
         <p>WORK IN PROGRESS</p>
-	<h2>Code Attatched</h2>
-	<a href="https://github.com/robin10125/llm-bootstrap-control-framework">https://github.com/robin10125/llm-bootstrap-control-framework</a>
-	<a href="https://github.com/robin10125/robot-control-bootstrapping">https://github.com/robin10125/robot-control-bootstrapping</a>
-
+        <p><strong>Code attached:</strong></p>
+        <ul>
+          <li><a href="https://github.com/robin10125/llm-bootstrap-control-framework">LLM Bootstrap Control Framework</a></li>
+          <li><a href="https://github.com/robin10125/robot-control-bootstrapping">Robot Control Bootstrapping</a></li>
+        </ul>
       </div>
+
+      <section>
+        <h2>Critic Features</h2>
+	<p>My first successful outcome and direction with my LLM aided policy research.  I have found that you can inject LLM authored policies into the critic and achieve great efficiency gains in robot RL training.   </p>
+	
+	<p>I noticed that the LLM authored policies are generally capable but also usually struggle to perform more difficult skilled tasks.  The naive approach of training a residual policy on a schedule of LLM authored actions works until the critical point, where the faults in the LLM authored actions greatly impair the neural policy.
+	Therefore, I needed an approach that allowed for a softer, suggestive LLM authored action that the overall policy can use when it's beneficial, and ignore when it's harmful.  
+	</p>
+	<p>
+	I tried around a dozen approaches to this, including warm starting the neural policy on the LLM authored actions, allowing the LLM to author a handoff stage where the polcy takes full control, and several others.
+	The approach that worked best however was simply inputting the LLM authored action program into the critic model, allowing it to see sugested actions.  It can therefore learn to assign higher value to these actions when they are beneficial, or lower value when they are harmful, allowing the actor model to quickly converge on functional behaviour.  
+	My results are so good in fact that I am considering writing a formal scientific paper of this approach to publish - but I just haven't had the compute to devote to the formal set of experiments needed to make a rigorous paper. </p>
+	<p> 
+	We can see below the results of a 4 hour training run comparing it to the same configuration without the injected LLM program into the critic, and we see a much greater success on a basic Shadow-Hand (full 5 digit hand, with 28 DOF) grasping environment.  
+	In general, on longer runs, I have found the baseline and the critic injected program saturate this task within 12 hours, but the critic injected program saturates it much faster.
+	</p>
+	<figure>
+	  <img src="../assets/critic-features-direct-baseline-comparison.png" alt="Early direct comparison on Shadow Hand cube lift: critic features achieve 0.520 success rate and 1.518 graded objective, compared with 0.227 success rate and 0.765 graded objective for no-prior PPO.">
+	  <figcaption>Early direct baseline comparison on one matched training seed with four hours per arm. <a href="../research-briefs/critic_features_preliminary_report.pdf">Source: Critic Features Preliminary Report (PDF)</a>.</figcaption>
+	</figure>
+	<p>
+	Another result I have found is that increasing the diversity of LLM authored programs injected to the critic also improves performance over using just 1 program.  By using 3 different LLM authored programs simultaneously, I found over (albiet limited testing) that it sharply outperformed a single program, reaching 50% success over 2 hours of training, versus 15% success for a single program.  I found the raw baseline training to generally have very poor success by two hours, often around 0%.
+	</p>
+	<p>
+	I do have one confounding result, however, which is that on a couple of experiments, I have found replacing the program with random gaussian noise also yeilds very strong results.  
+	I don't know if this is just explained by variance, or if I misconfigured some hyperparameters for the critic injected program (such as using a bad LLM authored program), so this will require some ironing out.  
+	 have done many training runs that show that the critic injected program improves performance, and that this is not the result of more critic parameters, so either this result is misfounded, because of noise, or simply adding noise to the critic also greatly improves performance (I think this is unlikely).
+	</p>
+	<p>
+	Thus the immediate next step is resolving this problem, which can be done by double checking the critic injected program configuration, and comparing it to the random noise and basic baseline over a long training run, with multiple seeds and different LLM authored programs.
+	</p>
+
+	
+       </section>
+
+      <section>
+        <h2>Cerebellum Inspired Lower Level Policies</h2>
+	<p> 
+	This project was the other most promising approach to integrating LLM authored robot control programs into neural policies.  
+	With this approach, I focused on creating a system that allows for a composition of neural models of increasing capabilities, splitting the work of robot control into a hierarchy of subsystems.  
+	The design of this approach was roughly inspired by vertibrate brain motor function control: with cortical regions planning and coordinating general movement patterns, and cerebellar networks refining the timing and force of muscle activations.  
+	A powerful frontier LLM with robot control tools like inverse kinematics, stands in for the cortex, suggesting actions to solve robot control problems, and a lower level residual policy network refines the timing and degree of the robot's actuators to close the gap between the rough LLM actions and a successful action.
+	</p>
+	<p>
+	To facilitate this, I designed an authoring framework for the LLMs to use, specifying that they generate a control program that when compiled into actions can have both the timing and degree of robot actuation be adjustable parameters.
+	</p>        
+	</section>
     </div>
   </article>
 </body>

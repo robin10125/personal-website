@@ -25,6 +25,8 @@ window.siteContent = {
     "Community Building",
   ],
   skillTagMap: {
+    "Tokenization" : ["Machine Learning"],
+    "AI Alignment" : ["Machine Learning"],
     "RLVR": ["Machine Learning"],
     "RL": ["Machine Learning"],
     "Agent Harness": ["Machine Learning"],
@@ -70,6 +72,8 @@ window.siteContent = {
   },
   skillProjectMap: {
     Python: [
+      "projects/delta-j-space-research.html",
+      "projects/tokenizer-research.html",
       "projects/accelerating-robot-learning-with-llms.html",
       "projects/automating-rlvr-environments.html",
       "projects/hyperconnections-mtp.html",
@@ -110,8 +114,8 @@ window.siteContent = {
     {
       title: "Delta J Space Research",
       summary:
-        "A placeholder for ongoing Delta J space research notes and experiments.",
-      tags: ["Machine Learning"],
+        "A stub for my Delta J space research.",
+      tags: ["AI Alignment", "Mechanistic Interpretability"],
       url: "projects/delta-j-space-research.html",
       highlight: true,
       highlightColor: "#b45309",
@@ -120,7 +124,7 @@ window.siteContent = {
      {
       title: "Accelerating Robot Policy Learning",
       summary:
-        "A gamut of experiments exploring the use of intelligent reasoning models to accelerate robot policy training.  The core intuition is distilling the intelligence of reasoning LLMs into robot policy models.  I approach this in several different ways, including using LLMs generated policies as a demo, biasing exploration with LLM determined priors, dense reward shaping, agent harnesses combining LLMs with policy networks, residual policies, and more techniques.  The goal is to better enable read world robot policy training through sample efficient learning.  Click to read the active technical blog.",
+        "A gamut of experiments exploring the use of intelligent reasoning models to accelerate robot policy training.  The core intuition is distilling the intelligence of reasoning LLMs into robot control.  Click to read the active technical blog.",
       tags: ["RL", "Robotics", "Agent Harness"],
       url: "projects/accelerating-robot-learning-with-llms.html",
       highlight: true,
@@ -131,8 +135,8 @@ window.siteContent = {
     {
       title: "Automating RLVR Environments",
       summary:
-        "Research project into recursive super intelligence by treating models improving themselves as a skill, and optimizing this ability explicitly.  In other words, training models to train models.  So far I have tested and improved a small framework for this kind of bi level optimization problem with maze games and RL agents.  I am now experimenting with training models to do the EUREKA framework more efficevly by treating downstream performance within the EUREKA framework as a learning signal for the code models generating shaped rewards.",
-      tags: ["RLVR", "Environment generation", "AutoML"],
+        "Research project into recursive super intelligence by treating models improving themselves as a skill, and optimizing this ability explicitly.  In other words, training models to train models.  So far I have tested and improved a small framework for bi level optimization of maze games and RL agents.  I am now experimenting with training models to do the EUREKA framework more efficevly by treating downstream performance within the EUREKA framework as a learning signal for the code models generating shaped rewards.",
+      tags: ["RLVR", "AutoML"],
       url: "projects/automating-rlvr-environments.html",
       highlight: true,
       highlightColor: "#b45309",
@@ -141,15 +145,15 @@ window.siteContent = {
     {
       title: "Hyperconnections and Multi-Token Prediction",
       summary:
-        "An experiment plan exploring whether hyperconnections can help models specialize under multi-token prediction objectives. The core comparison is between hyperconnection and residual models under next-token and multi-token training setups.  I have confirmed that these techniques simply add their efficiency gains together (the null hypothesis), and I have now pvioted this project to focus in improving the efficiency of these algorithms so that they can match the reported performance reported in the literature.  To this end I am developing my CUDA/XLA and distributed training skills.",
+        "An experiment exploring whether hyperconnections can help models specialize under multi-token prediction objectives.  I have confirmed that these techniques simply add their efficiency gains together, and I have now pvioted this project to focus in improving the efficiency of these algorithms so that they can match the reported performance reported in the literature.  To this end I am developing my CUDA/XLA and distributed training skills.",
       tags: ["Architectures", "Objective Functions"],
       url: "projects/hyperconnections-mtp.html"
     },
     {
       title: "Tokenizer Research",
       summary:
-        "A placeholder for ongoing tokenizer research notes and experiments.",
-      tags: ["Machine Learning"],
+        "Preliminary research into dynamic tokenization and other tokenization topics.",
+      tags: ["Tokenization"],
       url: "projects/tokenizer-research.html"
     },
     {
@@ -158,7 +162,7 @@ window.siteContent = {
         "A sparse autoencoder experiment testing whether a byte-level language model learns word-level features from character prediction. The project looks for selective features tied to specific words, then probes whether feature amplification can steer generation.",
       image: "assets/feature-activation-frequency.png",
       imageAlt: "Distribution of sparse autoencoder feature activation frequencies.",
-      tags: ["SAEs", "Mechanistic interpretability", "Representation Learning"],
+      tags: ["Mechanistic Interpretability", "Representation Learning"],
       url: "projects/character-word-features.html",
       highlight: true,
       highlightColor: "#b45309"
@@ -256,6 +260,20 @@ window.siteContent = {
       highlightColor: "#b45309",
       featured: true
 
+    },
+    {
+      title: "Voice Agent",
+      summary:
+        "A voice agent that functions as an orchestrator of other agent systems, allow users to control disparate agent systems with their voice.",
+      tags: ["Machine Learning", "Automatic Speech Recognition"],
+      url: "projects/voice-agent.html"
+    },
+    {
+      title: "Custom Phone Everything App",
+      summary:
+        "A custom phone app that allows me to create and update bespoke apps and tools on my smartphone.",
+      tags: ["Full Stack App"],
+      url: "projects/custom-phone-everything-app.html"
     },
     {
       title: "Programmatic Video Generation",

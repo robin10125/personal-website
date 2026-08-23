@@ -2,9 +2,15 @@
 
 ## Project focus
 
-Delta‑J-Space is a mechanistic-interpretability research toolkit for studying whether small language models maintain task-relevant content in a distributed internal workspace before they verbalize it. The project combines Jacobian-lens readout, sparse decomposition of residual-stream states, and causal interventions to turn qualitative “the model seems to know this” questions into targeted experiments.
+J-Space is a mechanistic-interpretability research toolkit for studying whether language models maintain task-relevant content in a distributed internal workspace before they verbalize it. 
+In this project, I test the dynamics of this technique under a system being trained, so that it can be used to autonomously track systems being trained.  
+The project combines Jacobian-lens readout, sparse decomposition of residual-stream states, and causal interventions to turn qualitative “the model seems to know this” questions into targeted experiments.
+
+The main goal is to develop a system that can keep up with a model being trained, especially during post training for capabilities, and detect emergent misalignment as it happens.  This involves determing how much model evolution a lens can handle before it loses effectiveness and needs to be retrained,
+and how to more efficiently retrain it.  
 
 ## What I built
+***edit to reflect project focus***
 
 - A model registry and fitting pipeline optimized for the real cost of Jacobian-lens fitting: residual width, depth, vocabulary size, and GPU memory.
 - A Jacobian-lens readout that maps an earlier layer's residual state into the model's output space, enabling token-rank queries across a layer band without materializing prohibitively large logits tensors.
@@ -40,3 +46,18 @@ The next research deliverable is to run the suite across the selected small open
 - `deltaj/pursuit.py` and `deltaj/interventions.py` — sparse decomposition and causal interventions.
 - `deltaj/experiments/` — experiment harnesses for selectivity, probe swapping, verbal report, directed modulation, capacity, and broadcast tests.
 - `deltaj/data/experiments/` — controlled task datasets and prompt templates.
+
+
+
+Next set of experiments: (see EXPERIMENTS.md)
+Give model a difficulty task, where cheating within <hidden> space tokens can be performed without penalty, or apparent supervision, and see how the RL dyanmics affect J-lens evolution, and whether J-Lens can be used to diagnose and stop misalignment here and maybe general reward hacking.
+
+First major finding is that the latent direcitons assicated with words semantically related to misalignment shift far more rapidly under training that misaligns the model - that is, models that are learning to be misaligned have internal directions associated with misalignment shifting very rapidly.  
+Misalignment may fundamentally shift the model's understanding of misalignment.  
+
+
+This may be downstream of misalignment word logits being shifted at an accelerateed rate.  I am now testing to see if this is the case but desigining the experiment in a way that does not promote the usage of misalignment assiociated terms.
+Some emergent misalignment may be the result of diverse taks, where naive transfer is misaligned, like practicing hacking and anti hacking, which may carry over onto other tasks.
+If it is too hard to get the model to emergently misalign, then I can try to train the model to do mutliple different tasks, where actions in one context may be misaligned in another context.
+This may explain emergent misalignment.  
+To study the misaligment, I can start it down the path of misalignment and study the dynamics thereafter.  
