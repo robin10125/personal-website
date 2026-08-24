@@ -87,6 +87,10 @@ a {
   font-size: clamp(2rem, 4vw, 3.6rem);
 }
 
+.life-name-title.anim-replayable {
+  cursor: pointer;
+}
+
 .life-name-title.anim-ready .life-name-fallback {
   position: absolute;
   width: 1px;

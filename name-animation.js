@@ -260,16 +260,21 @@
   var strip = TITLE.closest(".education-strip") || TITLE.parentNode;
   strip.style.position = "relative";
 
-  var sr2 = strip.getBoundingClientRect();
-  var ar = anim.getBoundingClientRect();
-  var bandTop = ar.top - sr2.top;
-  var bandHeight = ar.height;
+  var sr2, bandTop, bandHeight;
 
-  for (var lg = 0; lg < letters.length; lg++) {
-    var lr = letters[lg].el.getBoundingClientRect();
-    letters[lg].cx = lr.left + lr.width / 2 - sr2.left;
-    letters[lg].w = lr.width;
+  function computeGeometry() {
+    sr2 = strip.getBoundingClientRect();
+    var ar = anim.getBoundingClientRect();
+    bandTop = ar.top - sr2.top;
+    bandHeight = ar.height;
+
+    for (var lg = 0; lg < letters.length; lg++) {
+      var lr = letters[lg].el.getBoundingClientRect();
+      letters[lg].cx = lr.left + lr.width / 2 - sr2.left;
+      letters[lg].w = lr.width;
+    }
   }
+  computeGeometry();
 
   // Seed one row on its origin letter (the scattered diagonal the all-gather
   // spreads out from).
@@ -295,32 +300,36 @@
     return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
   }
 
-  var flyers = [];
-  for (var rb = 0; rb < ROWS; rb++) {
-    var se = seedOf[rb];
-    if (se < 0) continue;
-    var oneRow = [];
-    for (var t0 = 0; t0 < ROWS; t0++) oneRow.push(t0 === rb ? PALETTE[rb] : null);
-    var srcEl = letters[se].el;
-    var clone = document.createElement("span");
-    clone.className = "letter";
-    clone.textContent = letters[se].ch;
-    clone.style.position = "absolute";
-    clone.style.top = srcEl.offsetTop + "px";
-    clone.style.backgroundImage = bgFor(oneRow);
-    anim.appendChild(clone);
-    flyers.push({
-      el: clone,
-      row: rb,
-      from: animCenterX - srcEl.offsetWidth / 2,
-      to: srcEl.offsetLeft,
-    });
-  }
-  for (var fi = 0; fi < flyers.length; fi++) {
-    flyers[fi].el.style.left = flyers[fi].from + "px";
+  function buildFlyers() {
+    var flyers = [];
+    for (var rb = 0; rb < ROWS; rb++) {
+      var se = seedOf[rb];
+      if (se < 0) continue;
+      var oneRow = [];
+      for (var t0 = 0; t0 < ROWS; t0++)
+        oneRow.push(t0 === rb ? PALETTE[rb] : null);
+      var srcEl = letters[se].el;
+      var clone = document.createElement("span");
+      clone.className = "letter";
+      clone.textContent = letters[se].ch;
+      clone.style.position = "absolute";
+      clone.style.top = srcEl.offsetTop + "px";
+      clone.style.backgroundImage = bgFor(oneRow);
+      anim.appendChild(clone);
+      flyers.push({
+        el: clone,
+        row: rb,
+        from: animCenterX - srcEl.offsetWidth / 2,
+        to: srcEl.offsetLeft,
+      });
+    }
+    for (var fi = 0; fi < flyers.length; fi++) {
+      flyers[fi].el.style.left = flyers[fi].from + "px";
+    }
+    return flyers;
   }
 
-  function spreadFromCenter() {
+  function spreadFromCenter(flyers) {
     return new Promise(function (resolve) {
       var start = null;
       function frame(ts) {
@@ -508,14 +517,39 @@
 
   // --- run the sequence ----------------------------------------------------
   // Bars spread out from the middle to their seed letters, then all-gather,
-  // then fade to black.
-  spreadFromCenter()
-    .then(function () {
-      return wait(200);
-    })
-    .then(allGather)
-    .then(function () {
-      return wait(320);
-    })
-    .then(fadeToBlack);
+  // then fade to black. Replayable: resets every letter to blank first, so a
+  // click on the name after it has settled restarts the whole sequence.
+  var playing = false;
+
+  function play() {
+    if (playing) return;
+    playing = true;
+    TITLE.classList.remove("anim-replayable");
+
+    for (var i2 = 0; i2 < letters.length; i2++) {
+      var L = letters[i2];
+      for (var c2 = 0; c2 < ROWS; c2++) L.rows[c2] = null;
+      render(L);
+    }
+    computeGeometry();
+    var flyers = buildFlyers();
+
+    spreadFromCenter(flyers)
+      .then(function () {
+        return wait(200);
+      })
+      .then(allGather)
+      .then(function () {
+        return wait(320);
+      })
+      .then(fadeToBlack)
+      .then(function () {
+        playing = false;
+        TITLE.classList.add("anim-replayable");
+      });
+  }
+
+  play();
+
+  TITLE.addEventListener("click", play);
 })();

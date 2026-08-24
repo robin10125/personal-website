@@ -4,7 +4,7 @@ window.siteContent = {
   // card visually larger in the homepage section layout.
   education: {
     details:
-      "University of Western Ontario - Bachelor of Science, Specialization in Computer Science - 2026." 
+      "University of Western Ontario - Bachelor of Science, Honours Specialization in Computer Science - 2027." 
   },
   about: {
     details: [
