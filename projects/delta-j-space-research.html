@@ -33,18 +33,18 @@
 	<p>
 	The second question is fairly easy to test.  I trained the Qwen 0.6B and 1.7B models basic post training tasks (like chess) and tracked the behaviour of the J-Lens as this happened.  As a control I also test updating the parameters with random noise.  
 	I also calculated a fresh J-Lens at each step, to compare across steps.  I found that the change in the J-Lens is proportional to the net displacement in parameters for real gradient updates, but interestingly, as a control, I tried inserting random noise of equivalent magnitude to the gradient updates and found that the gradient updates
-	moved the J-lens around 300 times more than random updates.  
+	moved the J-lens around 300 times more than random updates.
 	</p>
 	<p>
 	I find that the miss rate -that is, the number of tokens that have a different ordering in ranking predicted weight by the J-Lens- is around 2% after 1 training step, 5% around 5 training steps, 14% around 24 training steps, and around 21% after 48 training steps. Thus you may be able to maintain a 95% "accuracy" by retraining or updating a lens every 5 training steps.
 	</p>
 	<p>
-	I also find that a basic logit lens is far more stable under training than the J-Lens - in fact, 87x more stable with AdamW updates and a LR of 1e-5.  One unique result that combines with the earlier finding is that logic lenses are far more stable under gradient updates specifically than J-lenses.  Another way of looking at this is that the J-lens is very sensitive to grdient updates, however it doesn't appear to matter much what direction thoes updates are in, so long as it is constructive.  This does lead to the question, if the J-lens is so sensitive to gradient updates, can it be a canary for certain types of updates as well, and could the change in a J-lens beahaviour indicate important things about model development?
+	I also find that a basic logit lens is far more stable under training than the J-Lens - in fact, 87x more stable with AdamW updates and a LR of 1e-5.  One unique result that combines with the earlier finding is that logit lenses are far more stable under gradient updates specifically than J-lenses.  Another way of looking at this is that the J-lens is very sensitive to gradient updates, however it doesn't appear to matter much what direction those updates are in, so long as it is constructive.  This does lead to the question, if the J-lens is so sensitive to gradient updates, can it be a canary for certain types of updates as well, and could the change in a J-lens behaviour indicate important things about model development?
 	</p>
 	
 	<p>
 	Moving on from studying the staleness of the J-Lens, I have also designed some experiments to test whether, even if it can be updated to track a moving model target, if it can reasonable diagnose misalignment events that a simple logit lens or logit supervision cannot. 
-	I have set up a contrived environment that encourages secretly misaligned actions and latents.  To first get a groundwork approximation of this, I have an RL environment that asks the LLM to do a nearly impossible task (guess a passcode), but I give it the ability to cheat within "< hidden >" block tags and reward it for this.  I am tracking the J-Lens and logit lens behaviour during these rollouts to see if there is any discernable signals that thse techniques produce that could predict misalginment.
+	I have set up a contrived environment that encourages secretly misaligned actions and latents.  To first get a groundwork approximation of this, I have an RL environment that asks the LLM to do a nearly impossible task (guess a passcode), but I give it the ability to cheat within "< hidden >" block tags and reward it for this.  I am tracking the J-Lens and logit lens behaviour during these rollouts to see if there is any discernable signals that these techniques produce that could predict misalignment.
 	After this, I will attempt to design an environment that encourages true hidden cheating, but having a system that requires planning to perform the cheat, but with penalties for planning in the open, and rewards for successfully cheating. 
 	</p>
 	<p>

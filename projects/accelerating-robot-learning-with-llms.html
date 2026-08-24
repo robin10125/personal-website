@@ -39,7 +39,7 @@
 	</p>
 	<p>
 	I tried around a dozen approaches to this, including warm starting the neural policy on the LLM authored actions, allowing the LLM to author a handoff stage where the polcy takes full control, and several others.
-	The approach that worked best however was simply inputting the LLM authored action program into the critic model, allowing it to see sugested actions.  It can therefore learn to assign higher value to these actions when they are beneficial, or lower value when they are harmful, allowing the actor model to quickly converge on functional behaviour.  
+	The approach that worked best however was simply inputting the LLM authored action program into the critic model, allowing it to see suggested actions.  It can therefore learn to assign higher value to these actions when they are beneficial, or lower value when they are harmful, allowing the actor model to quickly converge on functional behaviour.  
 	My results are so good in fact that I am considering writing a formal scientific paper of this approach to publish - but I just haven't had the compute to devote to the formal set of experiments needed to make a rigorous paper. </p>
 	<p> 
 	We can see below the results of a 4 hour training run comparing it to the same configuration without the injected LLM program into the critic, and we see a much greater success on a basic Shadow-Hand (full 5 digit hand, with 28 DOF) grasping environment.  
@@ -50,13 +50,13 @@
 	  <figcaption>Early direct baseline comparison on one matched training seed with four hours per arm. <a href="../research-briefs/critic_features_preliminary_report.pdf">Source: Critic Features Preliminary Report (PDF)</a>.</figcaption>
 	</figure>
 	<p>
-	Another result I have found is that increasing the diversity of LLM authored programs injected to the critic also improves performance over using just 1 program.  By using 3 different LLM authored programs simultaneously, I found over (albiet limited testing) that it sharply outperformed a single program, reaching 50% success over 2 hours of training, versus 15% success for a single program.  I found the raw baseline training to generally have very poor success by two hours, often around 0%.
+	Another result I have found is that increasing the diversity of LLM authored programs injected to the critic also improves performance over using just 1 program.  By using 3 different LLM authored programs simultaneously, I found over (albeit limited testing) that it sharply outperformed a single program, reaching 50% success over 2 hours of training, versus 15% success for a single program.  I found the raw baseline training to generally have very poor success by two hours, often around 0%.
 	</p>
 	<p>
-	I do have one confounding result, however, which is that on a couple of experiments, I have found replacing the program with random gaussian noise also yeilds very strong results.  
+	I do have one confounding result, however, which is that on a couple of experiments, I have found replacing the program with random gaussian noise also yields very strong results.  
 	I don't know if this is just explained by variance, or if I misconfigured some hyperparameters for the critic injected program (such as using a bad LLM authored program), so this will require some ironing out.  
-	I have done many training runs that show that the critic injected program improves performance, and that this is not the result of more critic parameters, so either this result is misfounded, because of noise, or simply adding noise to the critic also greatly improves performance (I think this is unlikely). 
-	I'll also note for now that the critic in estimates value more accurately with the injected program than with injected noise.
+	I have done many training runs that show that the critic injected program improves performance, and that this is not the result of more critic parameters, so either this result is confounded by noise, or simply adding noise to the critic also greatly improves performance (I think this is unlikely). 
+	I'll also note that the critic estimates value more accurately with the injected program than with injected noise.
 	</p>
 	<p>
 	Thus the immediate next step is resolving this problem, which can be done by double checking the critic injected program configuration, and comparing it to the random noise and basic baseline over a long training run, with multiple seeds and different LLM authored programs.
@@ -70,18 +70,18 @@
 	<p> 
 	This project was the other most promising approach to integrating LLM authored robot control programs into neural policies.  
 	With this approach, I focused on creating a system that allows for a composition of neural models of increasing capabilities, splitting the work of robot control into a hierarchy of subsystems.  
-	The design of this approach was roughly inspired by vertibrate brain motor function control: with cortical regions planning and coordinating general movement patterns, and cerebellar networks refining the timing and force of muscle activations.  
+	The design of this approach was roughly inspired by vertebrate brain motor function control: with cortical regions planning and coordinating general movement patterns, and cerebellar networks refining the timing and force of muscle activations.  
 	A powerful frontier LLM with robot control tools like inverse kinematics, stands in for the cortex, suggesting actions to solve robot control problems, and a lower level residual policy network refines the timing and degree of the robot's actuators to close the gap between the rough LLM actions and a successful action.
 	</p>
 	<p>
 	To facilitate this, I designed an authoring framework for the LLMs to use, specifying that they generate a control program that when compiled into actions can have both the timing and degree of robot actuation be adjustable parameters.
 	</p> 
 	<p>
-	I found that this produced a generally very competent LLM authored program, and one that can be easily trained to a high standard of performance with the lower level neural policy.  I also found; however, that the performance is very sensitive to the quality of the program, which I call the "motor tape".  On 1 hour training runs (around 10 000 rollouts), I found task success for grasping objects to range from 15% to 98.4%, with rapid oscillations late in training (something I am working on).  
-	Regardless, with smart checkpointing, this system can reach near 100% success on this task with no expert SFT on fewer than 10 000 simulated rollouts.  I have also found that a single lower policy can be jointly trained with multiple differnet tapes with strong performance, although the lower policy needs more training time to get sufficient rollouts from each motor tape.
-	</p>       
-	<p
-	I ahve moved on to testing the motor tape and training framework to other robots and tasks.  Preliminary results indicate easy saturation of easy tasks without training, and saturation of more difficult tasks like pick and place with a robot arm and hand within 10 000 rollouts.  I am currently training shared lower policies across diverse ranges of tasks, like pick and place, button pressing, grasping, drawer opening and closing and others, all with different shapes and initialization configuraions.  Prelimiary results remain promising for joint training of many tasks with diverse tapes on a single lower policy network.
+	I found that this produced a generally very competent LLM authored program, and one that can be easily trained to a high standard of performance with the lower level neural policy.  I also found; however, that the performance is very sensitive to the quality of the program, which I call the "motor tape".  On 1 hour training runs (around 10 000 rollouts), I found task success for grasping objects to range from 15% to 98.4%, with rapid oscillations late in training (something I am working on).
+	Regardless, with smart checkpointing, this system can reach near 100% success on this task with no expert SFT on fewer than 10 000 simulated rollouts.  I have also found that a single lower policy can be jointly trained with multiple different tapes with strong performance, although the lower policy needs more training time to get sufficient rollouts from each motor tape.
+	</p>
+	<p>
+	I have moved on to testing the motor tape and training framework to other robots and tasks.  Preliminary results indicate easy saturation of easy tasks without training, and saturation of more difficult tasks like pick and place with a robot arm and hand within 10 000 rollouts.  I am currently training shared lower policies across diverse ranges of tasks, like pick and place, button pressing, grasping, drawer opening and closing and others, all with different shapes and initialization configurations.  Preliminary results remain promising for joint training of many tasks with diverse tapes on a single lower policy network.
 	</p>
 	<h4> Long Term Vision </h4>
 	<p>
