@@ -758,6 +758,26 @@ a {
   text-decoration: underline;
 }
 
+.project-link-button {
+  display: inline-block;
+  margin-top: 24px;
+  padding: 8px 11px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--accent);
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.project-link-button:hover,
+.project-link-button:focus-visible {
+  border-color: var(--accent);
+  outline: none;
+}
+
 .project-article {
   width: min(820px, calc(100% - 40px));
   margin: 0 auto;

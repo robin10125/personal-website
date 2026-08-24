@@ -114,7 +114,7 @@ window.siteContent = {
     {
       title: "Delta J Space Research",
       summary:
-        "A stub for my Delta J space research.",
+        "A stub for my J-space research.",
       tags: ["AI Alignment", "Mechanistic Interpretability"],
       url: "projects/delta-j-space-research.html",
       highlight: true,
@@ -265,7 +265,7 @@ window.siteContent = {
       title: "Voice Agent",
       summary:
         "A voice agent that functions as an orchestrator of other agent systems, allow users to control disparate agent systems with their voice.",
-      tags: ["Machine Learning", "Automatic Speech Recognition"],
+      tags: ["Applied ML", "Automatic Speech Recognition"],
       url: "projects/voice-agent.html"
     },
     {
