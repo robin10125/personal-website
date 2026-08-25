@@ -28,6 +28,7 @@
     <div class="project-content">
       <div class="template-note">
         <p>WORK IN PROGRESS</p>
+	<p>While this remains a work in progress, I will post updates as a chronological sequence of update posts, and when it is finished, I will convert it into a single narrative. </p>
       </div>
 
       <section>
@@ -90,6 +91,12 @@
 	<p>
 	The motivation of this is to create a robot control system that can solve novel problems without any human simulation, to solve emergent problems in fully autonomous production systems of the future.
 	</p>	
+	</section>
+	<section>
+	<time class="study-topic-date" datetime="2026-08-23">August 25, 2026</time>
+	<p>
+	When applying this technique to problems with longer horizons and more complex sequences of actions, like pick and place, I was having great diffuculty with the policy collapsing and oscillating.  I tried many things to fix this, but what ended up working was removing the rollout fragmentation, which while incresaing performance greatly on simple tasks, like grasping, emperically causes collapse in more complex action policies.  Simply removing it stopped the collapse problem, and the lower policy now consistently improves the authored motor tape.  I am now experimenting with ways to enable proper credit attribution with long rollouts, to replace the functionailty of fragmentation.  My first set of experiments is sweeping discount factors. If this doesn't improve performance, I will look into hyperbolic discounting. 
+	</p>
 	</section>
     </div>
 	<p><strong>Code attached:</strong></p>
