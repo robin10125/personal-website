@@ -84,6 +84,14 @@
 	<p>
 	I have moved on to testing the motor tape and training framework to other robots and tasks.  Preliminary results indicate easy saturation of easy tasks without training, and saturation of more difficult tasks like pick and place with a robot arm and hand within 10 000 rollouts.  I am currently training shared lower policies across diverse ranges of tasks, like pick and place, button pressing, grasping, drawer opening and closing and others, all with different shapes and initialization configurations.  Preliminary results remain promising for joint training of many tasks with diverse tapes on a single lower policy network.
 	</p>
+
+	<section>
+	<time class="study-topic-date" datetime="2026-08-23">August 25, 2026</time>
+	<p>
+	When applying this technique to problems with longer horizons and more complex sequences of actions, like pick and place, I was having great diffuculty with the policy collapsing and oscillating.  I tried many things to fix this, but what ended up working was removing the rollout fragmentation, which while incresaing performance greatly on simple tasks, like grasping, emperically causes collapse in more complex action policies.  Simply removing it stopped the collapse problem, and the lower policy now consistently improves the authored motor tape.  I am now experimenting with ways to enable proper credit attribution with long rollouts, to replace the functionailty of fragmentation.  My first set of experiments is sweeping discount factors. If this doesn't improve performance, I will look into hyperbolic discounting. 
+	</p>
+	</section>
+
 	<h4> Long Term Vision </h4>
 	<p>
 	I hope to maximize the transfer of robot control abilities across a compositional hierarchy of control systems, with low level controllers functioning like a cerebellum, controlling fine scale timing, force and pressure, a high level reasoning LLM creating high level approaches to solving novel tasks, and a medium level VLA type system translating the LLM program into functional rough policies.
@@ -92,12 +100,7 @@
 	The motivation of this is to create a robot control system that can solve novel problems without any human simulation, to solve emergent problems in fully autonomous production systems of the future.
 	</p>	
 	</section>
-	<section>
-	<time class="study-topic-date" datetime="2026-08-23">August 25, 2026</time>
-	<p>
-	When applying this technique to problems with longer horizons and more complex sequences of actions, like pick and place, I was having great diffuculty with the policy collapsing and oscillating.  I tried many things to fix this, but what ended up working was removing the rollout fragmentation, which while incresaing performance greatly on simple tasks, like grasping, emperically causes collapse in more complex action policies.  Simply removing it stopped the collapse problem, and the lower policy now consistently improves the authored motor tape.  I am now experimenting with ways to enable proper credit attribution with long rollouts, to replace the functionailty of fragmentation.  My first set of experiments is sweeping discount factors. If this doesn't improve performance, I will look into hyperbolic discounting. 
-	</p>
-	</section>
+	
     </div>
 	<p><strong>Code attached:</strong></p>
         <ul>
