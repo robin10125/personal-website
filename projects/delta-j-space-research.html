@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Delta J Space Research | Robin Hylands</title>
+  <title>Alignment Research | Robin Hylands</title>
   <link rel="stylesheet" href="../styles.css">
   <script src="../projects.js" defer></script>
   <script src="../project-dates.js" defer></script>
@@ -17,8 +17,10 @@
 
     <header class="project-header">
       <p class="eyebrow">Research Project</p>
-      <h1>Delta J Space</h1>
-      <p class="project-summary">In this project I test the dynamics of the J-Space lens in an evolving model to find signs of misalignment that aren't present in token logits, whether the J-Lens is useful for aligning large language models during post training, and if it can keep up with a changing model without a burden of computational overhead.</p>
+      <h1>Alignment Research</h1>
+      <p class="project-summary">
+	In this project I investigage AI alignment and am performing several experiments across AI alignment training and mechanistic interpretability.  I am currently testing the training dynamics of multi-agent RL, inspired by the recent OpenAI emergent HuggingFace attacks.  I have also been testing the dynamics of the J-Space lens in an evolving model to find signs of misalignment that aren't present in token logits, 
+	whether the J-Lens is useful for aligning large language models during post training, and if it can keep up with a changing model without a burden of computational overhead.</p>
 	
     </header>
 
@@ -26,6 +28,8 @@
       <div class="template-note">
 	Work in Progress!
       </div>
+      <section>
+      <h2>J-Space Research</h2>
         <p>This project set out to test whether the J-Space Lens technique pioneered by Anthropic (J-lens) can be used to monitor alignment of LLMs during post training.  This research is still in progress, but I'll give a summary of notable things I've found so far.</p>
 	<p>
 	My first question was, when a model is being updated during training, how can we keep a functioning lens?  There are two dimensions to this question: how can we efficiently update the J-Lens to track model updates, and how much can a model update before the J-Lens becomes obsolete.
@@ -51,9 +55,17 @@
 	Tune in later for more updates!
 	</p>
       
-	<h2>Link to Repo</h2>
+	<h3>Code Attatched</h3>
 	<a href="https://github.com/robin10125/delta-j-space">Check out the repo here!</a>
+    </section>
+    
+    <section>
+	<h2>GRPO Multi Agent Alignment Dynamics</h2>
+    </section>
+
     </div>
+    
+    
 	
   </article>
 </body>

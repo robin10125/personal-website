@@ -92,6 +92,13 @@
 	</p>
 	</section>
 
+	<section>
+	<time class="study-topic-date" datetime="2026-08-27">August 27, 2026</time>
+	<p>
+	A sweep on discount rates has found little effect on the overall performance.  I have also found some initialization bugs, with objects initializating in impossible to reach areas.  I'm currently fixing up the tape author prompts to be more aware of the robot geometry, so that they can organically choose more effective actions, testing small open models on their ability to generate motor tape programs, adding a VLM layer to the system, and analyzing the emperical expressivity of the learned lower policy.  Much of the experimentation with lower policy bounds was done under the fragmented training regime, which confounds the results.  Greater expressvity of the lower policy will allow it to correct more motor tape errors and be generally more powerful. 
+	</p>
+	</section>
+
 	<h4> Long Term Vision </h4>
 	<p>
 	I hope to maximize the transfer of robot control abilities across a compositional hierarchy of control systems, with low level controllers functioning like a cerebellum, controlling fine scale timing, force and pressure, a high level reasoning LLM creating high level approaches to solving novel tasks, and a medium level VLA type system translating the LLM program into functional rough policies.

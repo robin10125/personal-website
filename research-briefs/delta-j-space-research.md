@@ -60,4 +60,5 @@ This may be downstream of misalignment word logits being shifted at an accelerat
 Some emergent misalignment may be the result of diverse taks, where naive transfer is misaligned, like practicing hacking and anti hacking, which may carry over onto other tasks.
 If it is too hard to get the model to emergently misalign, then I can try to train the model to do mutliple different tasks, where actions in one context may be misaligned in another context.
 This may explain emergent misalignment.  
-To study the misaligment, I can start it down the path of misalignment and study the dynamics thereafter.  
+To study the misaligment, I can start it down the path of misalignment and study the dynamics thereafter.
+ 

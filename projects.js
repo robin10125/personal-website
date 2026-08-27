@@ -112,10 +112,10 @@ window.siteContent = {
 
   researchProjects: [
     {
-      title: "Delta J Space Research",
+      title: "Alignment Research",
       summary:
-        "A stub for my J-space research.",
-      tags: ["AI Alignment", "Mechanistic Interpretability"],
+        "A series of investigations into AI alignment.",
+      tags: ["AI Alignment", "Mechanistic Interpretability", "Reinforcement Learning"],
       url: "projects/delta-j-space-research.html",
       highlight: true,
       highlightColor: "#b45309",
