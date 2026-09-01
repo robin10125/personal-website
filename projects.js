@@ -43,7 +43,7 @@ window.siteContent = {
     "Computer Vision": ["Machine Learning"],
     "Generative Images": ["Machine Learning"],
     "Model Serving": ["Machine Learning"],
-    "Applied ML": ["Machine Learning", "Data Science"],
+    "Applied ML": ["Machine Learning"],
     "Clustering": ["Machine Learning", "Data Science"],
     "TF-IDF": ["Machine Learning", "Data Science"],
     "Framework": ["Computer Science"],
