@@ -72,7 +72,7 @@ window.siteContent = {
   },
   skillProjectMap: {
     Python: [
-      "projects/delta-j-space-research.html",
+      "projects/alignment-research.html",
       "projects/tokenizer-research.html",
       "projects/accelerating-robot-learning-with-llms.html",
       "projects/automating-rlvr-environments.html",
@@ -116,7 +116,7 @@ window.siteContent = {
       summary:
         "A series of investigations into AI alignment.",
       tags: ["AI Alignment", "Mechanistic Interpretability", "Reinforcement Learning"],
-      url: "projects/delta-j-space-research.html",
+      url: "projects/alignment-research.html",
       highlight: true,
       highlightColor: "#b45309",
       featured: true
