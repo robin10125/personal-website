@@ -48,7 +48,7 @@
 	</p>
 	<figure>
 	  <img src="../assets/critic-features-direct-baseline-comparison.png" alt="Early direct comparison on Shadow Hand cube lift: critic features achieve 0.520 success rate and 1.518 graded objective, compared with 0.227 success rate and 0.765 graded objective for no-prior PPO.">
-	  <figcaption>Early direct baseline comparison on one matched training seed with four hours per arm. <a href="../research-briefs/critic_features_preliminary_report.pdf">Source: Critic Features Preliminary Report (PDF)</a>.</figcaption>
+	  <figcaption>Early direct baseline comparison on one matched training seed with four hours per arm.</figcaption>
 	</figure>
 	<p>
 	Another result I have found is that increasing the diversity of LLM authored programs injected to the critic also improves performance over using just 1 program.  By using 3 different LLM authored programs simultaneously, I found over (albeit limited testing) that it sharply outperformed a single program, reaching 50% success over 2 hours of training, versus 15% success for a single program.  I found the raw baseline training to generally have very poor success by two hours, often around 0%.
