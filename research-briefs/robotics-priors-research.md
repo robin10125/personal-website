@@ -56,4 +56,5 @@ Aug 16 - testing bounds of lower level policy, found that a fixed bound works be
 Aug 17 - testing different bounds - learned bound, bound based off of robot and task geometry, and bound based off of motor tape error.  Error based bound appears to work best. Moving on to testing in more diverse environments.
 Aug-18/19 - expanding testing to different objects, and testing single lower policy over all of them.  Rounded objects have low success rate.  Shared lower policy works.  Need to test if it works better though.  Hierarchical authoring works better than per task authoring.
 Aug 19 - Found that the reward objective was making the policy stray from an effective tape - this also raises an intersting question - can we use LLM policies to check the effectiveness of shaped rewards.  Shaped rewards that pull the behaviour off the LLM policy in stages that are not failing are probably malformed.  
-Aug 20 - Testing new shaped rewards that reward terminal stages more than beginning stages.  
+Aug 20 - Testing new shaped rewards that reward terminal stages more than beginning stages.  Testing tapes vs generic PPO agent.  
+Aug 21 - Testing lower policy dropout so that the critic can learn value of base motor tape.

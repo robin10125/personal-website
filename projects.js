@@ -112,6 +112,16 @@ window.siteContent = {
 
   researchProjects: [
     {
+      title: "Undergraduate Thesis: Neural Soft Tissue Modelling",
+      summary:
+        "My undergraduate thesis on using machine learning to model soft tissue behavior. This page will document the research process, experiments, and results as the project develops.",
+      tags: ["Machine Learning", "Soft Tissue Modeling"],
+      url: "projects/undergraduate-thesis-soft-tissue-modeling.html",
+      highlight: true,
+      highlightColor: "#b45309",
+      featured: true
+    },
+    {
       title: "Alignment Research",
       summary:
         "A series of investigations into AI alignment.",

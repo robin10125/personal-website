@@ -486,4 +486,5 @@
       projectHeader.appendChild(dateElement);
     }
   }
+
 })();

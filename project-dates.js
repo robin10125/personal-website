@@ -1,4 +1,5 @@
 window.projectLastUpdated = {
+  "projects/undergraduate-thesis-soft-tissue-modeling.html": "2026-09-15",
   "projects/alignment-research.html": "2026-09-01",
   "projects/accelerating-robot-learning-with-llms.html": "2026-08-27",
   "projects/automating-rlvr-environments.html": "2026-06-08",

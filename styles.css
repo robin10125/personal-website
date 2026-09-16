@@ -788,6 +788,20 @@ a {
   padding: 0 0 64px;
 }
 
+.project-banner {
+  margin: 0 0 24px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.project-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .project-header {
   padding: 14px 0 26px;
   border-bottom: 1px solid var(--line);
