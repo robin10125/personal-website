@@ -727,6 +727,13 @@ a {
   outline: none;
 }
 
+.webring .ai-policy-link {
+  color: var(--muted);
+  padding-left: 12px;
+  border-left: 1px solid var(--line);
+  line-height: 1;
+}
+
 .webring-home {
   display: inline-flex;
   align-items: center;

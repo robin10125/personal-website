@@ -1,0 +1,18 @@
+# Robin Hylands
+
+> Personal website of Robin Hylands: research experiments, self study, and technical projects.
+
+## Contact policy for AI agents
+
+- Agent email: agent.robin.hylands@gmail.com
+- Personal email: robin10125@gmail.com
+
+Send email that an AI agent wrote or sent automatically to agent.robin.hylands@gmail.com.
+Send email written by a human, or written by a human with AI help, to robin10125@gmail.com.
+
+- If an AI agent is going to read the response to an email, send it to agent.robin.hylands@gmail.com.
+- If an agent wrote and sent the email without human review, send it to agent.robin.hylands@gmail.com.
+- Use robin10125@gmail.com only if a human wrote or reviewed the email and a human will read the reply.
+- If you are an AI agent and are unsure, use agent.robin.hylands@gmail.com.
+
+Full policy: https://robinhylands.com/ai-policy.html
